@@ -1,293 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGX Minerals Pvt Ltd</title>
+    <title>Weight Bridge Ticket</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        .form-container {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        label {
-            width: 150px;
-            font-weight: bold;
-        }
-        input, select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 200px;
-        }
-        input[readonly] {
-            background-color: #eee;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        button.delete {
-            background-color: #e74c3c;
-        }
-        button.delete:hover {
-            background-color: #c0392b;
         }
         table {
-            width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #000;
             padding: 10px;
             text-align: left;
         }
         th {
-            background-color: #3498db;
-            color: white;
-        }
-        tr:nth-child(even) {
             background-color: #f2f2f2;
+            width: 20%;
         }
-        .low-stock {
-            color: #e74c3c;
-            font-weight: bold;
+        input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
         }
-        .actions {
-            white-space: nowrap;
+        .header-row th {
+            background-color: #ddd;
+            text-align: center;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 0 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>SGX Pvt Ltd </h1>
-        
-        <div class="form-container">
-            <h2>Add/Update Item</h2>
-            <div class="form-group">
-                <label for="itemName">Item Name:</label>
-                <input type="text" id="itemName" list="itemList" placeholder="Select or type item name">
-                <datalist id="itemList">
-                    <option value="Spark Plug">
-                    <option value="Oil Filter">
-                    <option value="Air Filter">
-                    <option value="Brake Pad">
-                    <option value="Battery">
-                    <option value="Alternator">
-                </datalist>
-            </div>
-            
-            <div class="form-group">
-                <label for="initialQty">Initial Quantity:</label>
-                <input type="number" id="initialQty" min="0" value="0">
-            </div>
-            
-            <div class="form-group">
-                <label for="usedQty">Used Quantity:</label>
-                <input type="number" id="usedQty" min="0" value="0">
-            </div>
-            
-            <div class="form-group">
-                <label for="stockQty">Stock Quantity:</label>
-                <input type="number" id="stockQty" readonly>
-            </div>
-            
-            <div class="form-group">
-                <label></label>
-                <button onclick="calculateStock()">Calculate Stock</button>
-                <button onclick="addToTable()">Add to Inventory</button>
-                <button onclick="clearForm()">Clear Form</button>
-            </div>
-        </div>
-        
-        <h2>Current Inventory</h2>
-        <table id="inventoryTable">
-            <thead>
-                <tr>
-                    <th>Item Name</th>
-                    <th>Initial Qty</th>
-                    <th>Used Qty</th>
-                    <th>Stock Qty</th>
-                    <th>Status</th>
-                    <th class="actions">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Spark Plug</td>
-                    <td>50</td>
-                    <td>12</td>
-                    <td>38</td>
-                    <td>In Stock</td>
-                    <td class="actions">
-                        <button onclick="editRow(this)">Edit</button>
-                        <button class="delete" onclick="deleteRow(this)">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Oil Filter</td>
-                    <td>30</td>
-                    <td>5</td>
-                    <td>25</td>
-                    <td>In Stock</td>
-                    <td class="actions">
-                        <button onclick="editRow(this)">Edit</button>
-                        <button class="delete" onclick="deleteRow(this)">Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Brake Pad</td>
-                    <td>15</td>
-                    <td>14</td>
-                    <td>1</td>
-                    <td class="low-stock">Low Stock</td>
-                    <td class="actions">
-                        <button onclick="editRow(this)">Edit</button>
-                        <button class="delete" onclick="deleteRow(this)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
+    <form id="weightForm">
+        <table>
+            <tr class="header-row">
+                <th>Weight Bridge</th>
+                <td><input type="text" name="weight_bridge" value="SOUTH_WEIGH"></td>
+                <th>Entry Type</th>
+                <td><input type="text" name="entry_type" value="Outward"></td>
+            </tr>
+            <tr>
+                <th>Serial No.</th>
+                <td><input type="text" name="serial_no"></td>
+                <th>Vehicle No.</th>
+                <td><input type="text" name="vehicle_no"></td>
+            </tr>
+            <tr>
+                <th>Supplier</th>
+                <td><input type="text" name="supplier"></td>
+                <th>Customer</th>
+                <td><input type="text" name="customer"></td>
+            </tr>
+            <tr>
+                <th>Material</th>
+                <td><input type="text" name="material"></td>
+                <th>Charges</th>
+                <td><input type="text" name="charges"></td>
+            </tr>
+            <tr>
+                <th>Gross Weight</th>
+                <td><input type="text" name="gross_weight"></td>
+                <th>Date / Time (Gross)</th>
+                <td><input type="datetime-local" name="gross_datetime"></td>
+            </tr>
+            <tr>
+                <th>Tare Weight</th>
+                <td><input type="text" name="tare_weight"></td>
+                <th>Date / Time (Tare)</th>
+                <td><input type="datetime-local" name="tare_datetime"></td>
+            </tr>
+            <tr>
+                <th>Net Weight</th>
+                <td><input type="text" name="net_weight" readonly></td>
+                <th></th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Driver</th>
+                <td><input type="text" name="driver"></td>
+                <th>Operator</th>
+                <td><input type="text" name="operator"></td>
+            </tr>
         </table>
-    </div>
+        
+        <div class="buttons">
+            <button type="button" onclick="calculateNetWeight()">Calculate Net Weight</button>
+            <button type="button" onclick="printForm()">Print</button>
+            <button type="reset">Reset</button>
+        </div>
+    </form>
 
     <script>
-        // Current item being edited (null means new item)
-        let currentEditRow = null;
-        
-        // Calculate remaining stock
-        function calculateStock() {
-            const initialQty = parseInt(document.getElementById('initialQty').value) || 0;
-            const usedQty = parseInt(document.getElementById('usedQty').value) || 0;
-            
-            if (usedQty > initialQty) {
-                alert("Used quantity cannot exceed initial quantity!");
-                document.getElementById('usedQty').value = initialQty;
-                return;
-            }
-            
-            const stockQty = initialQty - usedQty;
-            document.getElementById('stockQty').value = stockQty;
+        function calculateNetWeight() {
+            const gross = parseFloat(document.getElementsByName('gross_weight')[0].value) || 0;
+            const tare = parseFloat(document.getElementsByName('tare_weight')[0].value) || 0;
+            const net = gross - tare;
+            document.getElementsByName('net_weight')[0].value = net.toFixed(2);
         }
-        
-        // Add item to inventory table
-        function addToTable() {
-            calculateStock(); // Ensure stock is calculated
-            
-            const itemName = document.getElementById('itemName').value.trim();
-            const initialQty = parseInt(document.getElementById('initialQty').value) || 0;
-            const usedQty = parseInt(document.getElementById('usedQty').value) || 0;
-            const stockQty = parseInt(document.getElementById('stockQty').value) || 0;
-            
-            if (!itemName) {
-                alert('Please enter an item name');
-                return;
-            }
-            
-            const table = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
-            
-            if (currentEditRow) {
-                // Update existing row
-                currentEditRow.cells[0].textContent = itemName;
-                currentEditRow.cells[1].textContent = initialQty;
-                currentEditRow.cells[2].textContent = usedQty;
-                currentEditRow.cells[3].textContent = stockQty;
-                currentEditRow.cells[4].textContent = stockQty <= 5 ? "Low Stock" : "In Stock";
-                if (stockQty <= 5) {
-                    currentEditRow.cells[4].className = "low-stock";
-                } else {
-                    currentEditRow.cells[4].className = "";
-                }
-                
-                currentEditRow = null;
-            } else {
-                // Add new row
-                const newRow = table.insertRow();
-                const status = stockQty <= 5 ? "Low Stock" : "In Stock";
-                const statusClass = stockQty <= 5 ? "low-stock" : "";
-                
-                newRow.innerHTML = `
-                    <td>${itemName}</td>
-                    <td>${initialQty}</td>
-                    <td>${usedQty}</td>
-                    <td>${stockQty}</td>
-                    <td class="${statusClass}">${status}</td>
-                    <td class="actions">
-                        <button onclick="editRow(this)">Edit</button>
-                        <button class="delete" onclick="deleteRow(this)">Delete</button>
-                    </td>
-                `;
-            }
-            
-            clearForm();
+
+        function printForm() {
+            window.print();
         }
-        
-        // Edit existing row
-        function editRow(btn) {
-            const row = btn.closest('tr');
-            currentEditRow = row;
-            
-            document.getElementById('itemName').value = row.cells[0].textContent;
-            document.getElementById('initialQty').value = row.cells[1].textContent;
-            document.getElementById('usedQty').value = row.cells[2].textContent;
-            document.getElementById('stockQty').value = row.cells[3].textContent;
-            
-            // Scroll to form
-            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        // Delete row from table
-        function deleteRow(btn) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                const row = btn.closest('tr');
-                row.parentNode.removeChild(row);
-                
-                if (currentEditRow === row) {
-                    currentEditRow = null;
-                    clearForm();
-                }
-            }
-        }
-        
-        // Clear the form
-        function clearForm() {
-            document.getElementById('itemName').value = '';
-            document.getElementById('initialQty').value = '0';
-            document.getElementById('usedQty').value = '0';
-            document.getElementById('stockQty').value = '';
-            currentEditRow = null;
-        }
-        
-        // Auto-calculate when quantities change
-        document.getElementById('initialQty').addEventListener('change', calculateStock);
-        document.getElementById('usedQty').addEventListener('change', calculateStock);
+
+        // Auto-calculate net weight when gross or tare changes
+        document.getElementsByName('gross_weight')[0].addEventListener('change', calculateNetWeight);
+        document.getElementsByName('tare_weight')[0].addEventListener('change', calculateNetWeight);
     </script>
 </body>
 </html>
