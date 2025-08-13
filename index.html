@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,11 +36,11 @@
         .box:hover {
             transform: translateY(-5px);
         }
-        .other-box, .excavator-box {
+        .excavator-box, .transport-box {
             flex: 0 0 calc(50% - 20px);
             max-width: calc(50% - 20px);
         }
-        .transport-box {
+        .other-box {
             flex: 1;
             min-width: 300px;
         }
@@ -114,10 +113,6 @@
             font-size: 12px;
             color: #2c3e50;
         }
-        .shift-header {
-            background-color: #e6f7ff;
-            font-weight: bold;
-        }
         .total-row {
             font-weight: bold;
             background-color: #f0f0f0;
@@ -148,33 +143,6 @@
             padding: 6px;
             font-size: 12px;
         }
-        .tipper-row {
-            background-color: #f9f9f9;
-        }
-        .day-row {
-            background-color: #e6f7ff;
-        }
-        .night-row {
-            background-color: #f5e6ff;
-        }
-        .trip-header {
-            font-weight: bold;
-            background-color: #f2f2f2;
-        }
-        .trip-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .trip-label {
-            min-width: 100px;
-            font-weight: bold;
-            padding: 5px;
-        }
-        .trip-input-group {
-            display: flex;
-            gap: 8px;
-        }
         .tipper-card {
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -196,15 +164,149 @@
             padding-top: 8px;
             border-top: 1px solid #ddd;
         }
+        .trip-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .trip-label {
+            min-width: 100px;
+            font-weight: bold;
+            padding: 5px;
+        }
+        .trip-input-group {
+            display: flex;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Quarry & Transport Operations Dashboard</h1>
     </div>
-  
+
     <div class="container">
-        <!-- Box 1: Other Operations -->
+        <!-- Box 1: Excavator Operations -->
+        <div class="box excavator-box">
+            <div class="box-title">Excavator Operations</div>
+            <div class="excavator-section">
+                <h3>Volvo EC210D (Old) - SL No. 253178</h3>
+                <div class="form-group">
+                    <label for="exc1DayHours">Day Shift Hours:</label>
+                    <input type="number" id="exc1DayHours" min="0" max="12" value="8" class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="exc1NightHours">Night Shift Hours:</label>
+                    <input type="number" id="exc1NightHours" min="0" max="12" value="8" class="small-input">
+                </div>
+            </div>
+            <div class="excavator-section">
+                <h3>Volvo EC210DL (New) - SL No. 312126</h3>
+                <div class="form-group">
+                    <label for="exc2DayHours">Day Shift Hours:</label>
+                    <input type="number" id="exc2DayHours" min="0" max="12" value="8" class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="exc2NightHours">Night Shift Hours:</label>
+                    <input type="number" id="exc2NightHours" min="0" max="12" value="8" class="small-input">
+                </div>
+            </div>
+            <button class="btn" onclick="calculateExcavators()">Calculate Excavator Hours</button>
+            <div id="excavatorResults" class="results">
+                <h3>Excavator Summary</h3>
+                <table>
+                    <tr>
+                        <th>Excavator</th>
+                        <th>Day Hours</th>
+                        <th>Night Hours</th>
+                        <th>Total Hours</th>
+                    </tr>
+                    <tr>
+                        <td>Volvo EC210D (Old)</td>
+                        <td id="resultExc1Day">0</td>
+                        <td id="resultExc1Night">0</td>
+                        <td id="resultExc1Total">0</td>
+                    </tr>
+                    <tr>
+                        <td>Volvo EC210DL (New)</td>
+                        <td id="resultExc2Day">0</td>
+                        <td id="resultExc2Night">0</td>
+                        <td id="resultExc2Total">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Combined Total</td>
+                        <td id="resultTotalDayHours">0</td>
+                        <td id="resultTotalNightHours">0</td>
+                        <td id="resultTotalHours">0</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Box 2: Transport Operations -->
+        <div class="box transport-box">
+            <div class="box-title">Transport Operations</div>
+            <h3>Tipper-wise Details</h3>
+            <div class="scrollable-table">
+                <div id="tipperTableContainer">
+                    <!-- Tipper cards will be generated here -->
+                </div>
+            </div>
+            <h3>Daily Summary</h3>
+            <div class="form-group">
+                <label for="ftd">FTD (First Trip Details):</label>
+                <input type="text" id="ftd" placeholder="Enter first trip details">
+            </div>
+            <div class="form-group">
+                <label for="totalDayTrips">Total Day Shift Trips:</label>
+                <input type="number" id="totalDayTrips" min="0" value="0" readonly class="small-input">
+            </div>
+            <div class="form-group">
+                <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
+                <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly class="small-input">
+            </div>
+            <div class="form-group">
+                <label for="totalNightTrips">Total Night Shift Trips:</label>
+                <input type="number" id="totalNightTrips" min="0" value="0" readonly class="small-input">
+            </div>
+            <div class="form-group">
+                <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
+                <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly class="small-input">
+            </div>
+            <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
+            <div id="transportResults" class="results">
+                <h3>Transport Summary</h3>
+                <table>
+                    <tr>
+                        <th>Shift</th>
+                        <th>Total Trips</th>
+                        <th>Total Tonnage</th>
+                        <th>Avg Tonnage/Trip</th>
+                    </tr>
+                    <tr>
+                        <td>Day</td>
+                        <td id="resultDayTrips">0</td>
+                        <td id="resultDayTonnage">0</td>
+                        <td id="resultDayAvgTonnage">0</td>
+                    </tr>
+                    <tr>
+                        <td>Night</td>
+                        <td id="resultNightTrips">0</td>
+                        <td id="resultNightTonnage">0</td>
+                        <td id="resultNightAvgTonnage">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Combined Total</td>
+                        <td id="resultTotalTrips">0</td>
+                        <td id="resultTotalTonnage">0</td>
+                        <td id="resultTotalAvgTonnage">0</td>
+                    </tr>
+                </table>
+                <div id="ftdResult" style="margin-top: 10px; font-size: 12px;"></div>
+            </div>
+        </div>
+
+        <!-- Box 3: Other Operations -->
         <div class="box other-box">
             <div class="box-title">Other Operations</div>
             <div class="form-group">
@@ -250,134 +352,8 @@
                 </table>
             </div>
         </div>
-
-        <!-- Box 2: Excavator Operations -->
-        <div class="box excavator-box">
-            <div class="box-title">Excavator Operations</div>
-          
-            <div class="excavator-section">
-                <h3>Volvo EC210D (Old) - SL No. 253178</h3>
-                <div class="form-group">
-                    <label for="exc1DayHours">Day Shift Hours:</label>
-                    <input type="number" id="exc1DayHours" min="0" max="12" value="8" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="exc1NightHours">Night Shift Hours:</label>
-                    <input type="number" id="exc1NightHours" min="0" max="12" value="8" class="small-input">
-                </div>
-            </div>
-          
-            <div class="excavator-section">
-                <h3>Volvo EC210DL (New) - SL No. 312126</h3>
-                <div class="form-group">
-                    <label for="exc2DayHours">Day Shift Hours:</label>
-                    <input type="number" id="exc2DayHours" min="0" max="12" value="8" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="exc2NightHours">Night Shift Hours:</label>
-                    <input type="number" id="exc2NightHours" min="0" max="12" value="8" class="small-input">
-                </div>
-            </div>
-          
-            <button class="btn" onclick="calculateExcavators()">Calculate Excavator Hours</button>
-            <div id="excavatorResults" class="results">
-                <h3>Excavator Summary</h3>
-                <table>
-                    <tr>
-                        <th>Excavator</th>
-                        <th>Day Hours</th>
-                        <th>Night Hours</th>
-                        <th>Total Hours</th>
-                    </tr>
-                    <tr>
-                        <td>Volvo EC210D (Old)</td>
-                        <td id="resultExc1Day">0</td>
-                        <td id="resultExc1Night">0</td>
-                        <td id="resultExc1Total">0</td>
-                    </tr>
-                    <tr>
-                        <td>Volvo EC210DL (New)</td>
-                        <td id="resultExc2Day">0</td>
-                        <td id="resultExc2Night">0</td>
-                        <td id="resultExc2Total">0</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td>Combined Total</td>
-                        <td id="resultTotalDayHours">0</td>
-                        <td id="resultTotalNightHours">0</td>
-                        <td id="resultTotalHours">0</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-      
-        <!-- Box 3: Transport Operations -->
-        <div class="box transport-box">
-            <div class="box-title">Transport Operations</div>
-          
-            <h3>Tipper-wise Details</h3>
-            <div class="scrollable-table">
-                <div id="tipperTableContainer">
-                    <!-- Tipper cards will be generated here -->
-                </div>
-            </div>
-          
-            <h3>Daily Summary</h3>
-            <div class="form-group">
-                <label for="ftd">FTD (First Trip Details):</label>
-                <input type="text" id="ftd" placeholder="Enter first trip details">
-            </div>
-            <div class="form-group">
-                <label for="totalDayTrips">Total Day Shift Trips:</label>
-                <input type="number" id="totalDayTrips" min="0" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
-                <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalNightTrips">Total Night Shift Trips:</label>
-                <input type="number" id="totalNightTrips" min="0" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
-                <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-            </div>
-          
-            <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
-            <div id="transportResults" class="results">
-                <h3>Transport Summary</h3>
-                <table>
-                    <tr>
-                        <th>Shift</th>
-                        <th>Total Trips</th>
-                        <th>Total Tonnage</th>
-                        <th>Avg Tonnage/Trip</th>
-                    </tr>
-                    <tr>
-                        <td>Day</td>
-                        <td id="resultDayTrips">0</td>
-                        <td id="resultDayTonnage">0</td>
-                        <td id="resultDayAvgTonnage">0</td>
-                    </tr>
-                    <tr>
-                        <td>Night</td>
-                        <td id="resultNightTrips">0</td>
-                        <td id="resultNightTonnage">0</td>
-                        <td id="resultNightAvgTonnage">0</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td>Combined Total</td>
-                        <td id="resultTotalTrips">0</td>
-                        <td id="resultTotalTonnage">0</td>
-                        <td id="resultTotalAvgTonnage">0</td>
-                    </tr>
-                </table>
-                <div id="ftdResult" style="margin-top: 10px; font-size: 12px;"></div>
-            </div>
-        </div>
     </div>
-  
+
     <script>
         // Tipper registration numbers
         const tipperNumbers = [
@@ -394,117 +370,107 @@
             "AP39WF2058",
             "AP39WF2059"
         ];
-      
+
         // Generate tipper table for 12 fixed tippers
         function updateTipperTable() {
             const numTippers = 12;
             let tableHTML = '';
-          
+
             for (let i = 0; i < numTippers; i++) {
                 const tipperNo = i < tipperNumbers.length ? tipperNumbers[i] : `Tipper ${i+1}`;
-               
                 tableHTML += `
-                <div class="tipper-card">
-                    <div class="tipper-header">
-                        <span>${tipperNo}</span>
-                    </div>
-                   
-                    <div class="trip-row">
-                        <div class="trip-label">Day Shift:</div>
-                        <div class="trip-input-group">`;
-               
-                // Day shift trip inputs
+                    <div class="tipper-card">
+                        <div class="tipper-header">
+                            <span>${tipperNo}</span>
+                        </div>
+                        <div class="trip-row">
+                            <div class="trip-label">Day Shift:</div>
+                            <div class="trip-input-group">`;
                 for (let j = 1; j <= 8; j++) {
                     tableHTML += `<input type="number" id="tipper${i+1}DayTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
                 }
-               
                 tableHTML += `
                         </div>
-                    </div>
-                   
-                    <div class="trip-row">
-                        <div class="trip-label">Night Shift:</div>
-                        <div class="trip-input-group">`;
-               
-                // Night shift trip inputs
+                        </div>
+                        <div class="trip-row">
+                            <div class="trip-label">Night Shift:</div>
+                            <div class="trip-input-group">`;
                 for (let j = 1; j <= 8; j++) {
                     tableHTML += `<input type="number" id="tipper${i+1}NightTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
                 }
-               
                 tableHTML += `
                         </div>
-                    </div>
-                   
-                    <div class="tipper-totals">
-                        <span>Day Trips: <span id="tipper${i+1}DayTrips">0</span></span>
-                        <span>Day Total: <span id="tipper${i+1}DayTotal">0</span></span>
-                        <span>Night Trips: <span id="tipper${i+1}NightTrips">0</span></span>
-                        <span>Night Total: <span id="tipper${i+1}NightTotal">0</span></span>
-                    </div>
-                </div>`;
+                        </div>
+                        <div class="tipper-totals">
+                            <span>Day Trips: <span id="tipper${i+1}DayTrips">0</span></span>
+                            <span>Day Total: <span id="tipper${i+1}DayTotal">0</span></span>
+                            <span>Night Trips: <span id="tipper${i+1}NightTrips">0</span></span>
+                            <span>Night Total: <span id="tipper${i+1}NightTotal">0</span></span>
+                        </div>
+                    </div>`;
             }
-          
+
             document.getElementById('tipperTableContainer').innerHTML = tableHTML;
         }
-      
+
         // Initialize tipper table on page load
         window.onload = updateTipperTable;
-      
+
         function calculateOther() {
             const numNMR = parseFloat(document.getElementById('numNMR').value) || 0;
             const numCompressor = parseFloat(document.getElementById('numCompressor').value) || 0;
             const numFeets = parseFloat(document.getElementById('numFeets').value) || 0;
             const numHoles = parseFloat(document.getElementById('numHoles').value) || 0;
-          
+
             document.getElementById('resultNMR').textContent = numNMR.toFixed(0);
             document.getElementById('resultCompressor').textContent = numCompressor.toFixed(0);
             document.getElementById('resultFeets').textContent = numFeets.toFixed(0);
             document.getElementById('resultHoles').textContent = numHoles.toFixed(0);
-          
+
             document.getElementById('otherResults').style.display = 'block';
         }
-      
+
         function calculateExcavators() {
             const exc1Day = parseFloat(document.getElementById('exc1DayHours').value) || 0;
             const exc1Night = parseFloat(document.getElementById('exc1NightHours').value) || 0;
             const exc1Total = exc1Day + exc1Night;
-          
+
             const exc2Day = parseFloat(document.getElementById('exc2DayHours').value) || 0;
             const exc2Night = parseFloat(document.getElementById('exc2NightHours').value) || 0;
             const exc2Total = exc2Day + exc2Night;
-          
+
             const totalDay = exc1Day + exc2Day;
             const totalNight = exc1Night + exc2Night;
             const totalHours = exc1Total + exc2Total;
-          
+
             document.getElementById('resultExc1Day').textContent = exc1Day.toFixed(1);
             document.getElementById('resultExc1Night').textContent = exc1Night.toFixed(1);
             document.getElementById('resultExc1Total').textContent = exc1Total.toFixed(1);
-          
+
             document.getElementById('resultExc2Day').textContent = exc2Day.toFixed(1);
             document.getElementById('resultExc2Night').textContent = exc2Night.toFixed(1);
             document.getElementById('resultExc2Total').textContent = exc2Total.toFixed(1);
-          
+
             document.getElementById('resultTotalDayHours').textContent = totalDay.toFixed(1);
             document.getElementById('resultTotalNightHours').textContent = totalNight.toFixed(1);
             document.getElementById('resultTotalHours').textContent = totalHours.toFixed(1);
-          
+
             document.getElementById('excavatorResults').style.display = 'block';
         }
-      
+
         function calculateTransport() {
             const numTippers = 12;
             let totalDayTrips = 0;
             let totalDayTonnage = 0;
             let totalNightTrips = 0;
             let totalNightTonnage = 0;
-          
+
             for (let i = 1; i <= numTippers; i++) {
                 let tipperDayTotal = 0;
                 let tipperDayTrips = 0;
                 let tipperNightTotal = 0;
                 let tipperNightTrips = 0;
-              
+
                 for (let j = 1; j <= 8; j++) {
                     const dayTripValue = parseFloat(document.getElementById(`tipper${i}DayTrip${j}`).value) || 0;
                     if (dayTripValue > 0) {
@@ -517,46 +483,46 @@
                         tipperNightTotal += nightTripValue;
                     }
                 }
-              
+
                 document.getElementById(`tipper${i}DayTrips`).textContent = tipperDayTrips;
                 document.getElementById(`tipper${i}DayTotal`).textContent = tipperDayTotal.toFixed(1);
                 document.getElementById(`tipper${i}NightTrips`).textContent = tipperNightTrips;
                 document.getElementById(`tipper${i}NightTotal`).textContent = tipperNightTotal.toFixed(1);
-              
+
                 totalDayTrips += tipperDayTrips;
                 totalDayTonnage += tipperDayTotal;
                 totalNightTrips += tipperNightTrips;
                 totalNightTonnage += tipperNightTotal;
             }
-          
+
             document.getElementById('totalDayTrips').value = totalDayTrips;
             document.getElementById('totalDayTonnage').value = totalDayTonnage.toFixed(1);
             document.getElementById('totalNightTrips').value = totalNightTrips;
             document.getElementById('totalNightTonnage').value = totalNightTonnage.toFixed(1);
-          
+
             const dayAvg = totalDayTrips > 0 ? totalDayTonnage / totalDayTrips : 0;
             const nightAvg = totalNightTrips > 0 ? totalNightTonnage / totalNightTrips : 0;
             const totalTrips = totalDayTrips + totalNightTrips;
             const totalTonnage = totalDayTonnage + totalNightTonnage;
             const totalAvg = totalTrips > 0 ? totalTonnage / totalTrips : 0;
-          
+
             document.getElementById('resultDayTrips').textContent = totalDayTrips;
             document.getElementById('resultDayTonnage').textContent = totalDayTonnage.toFixed(1);
             document.getElementById('resultDayAvgTonnage').textContent = dayAvg.toFixed(1);
-          
+
             document.getElementById('resultNightTrips').textContent = totalNightTrips;
             document.getElementById('resultNightTonnage').textContent = totalNightTonnage.toFixed(1);
             document.getElementById('resultNightAvgTonnage').textContent = nightAvg.toFixed(1);
-          
+
             document.getElementById('resultTotalTrips').textContent = totalTrips;
             document.getElementById('resultTotalTonnage').textContent = totalTonnage.toFixed(1);
             document.getElementById('resultTotalAvgTonnage').textContent = totalAvg.toFixed(1);
-          
+
             const ftd = document.getElementById('ftd').value;
             if (ftd) {
                 document.getElementById('ftdResult').innerHTML = `<strong>FTD:</strong> ${ftd}`;
             }
-          
+
             document.getElementById('transportResults').style.display = 'block';
         }
     </script>
