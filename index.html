@@ -1,124 +1,431 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weight Bridge Ticket</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarry & Transport Operations Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .box {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            flex: 1;
+            min-width: 300px;
+        }
+        .box-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            display: none;
         }
         table {
-            border-collapse: collapse;
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
         th, td {
-            border: 1px solid #000;
-            padding: 10px;
-            text-align: left;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
-            width: 20%;
         }
-        input {
-            width: 100%;
-            padding: 5px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
+        .shift-header {
+            background-color: #e6f7ff;
+            font-weight: bold;
         }
-        .header-row th {
-            background-color: #ddd;
-            text-align: center;
+        .total-row {
+            font-weight: bold;
+            background-color: #f0f0f0;
         }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
+        .excavator-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
         }
-        button {
-            padding: 8px 15px;
-            margin: 0 10px;
-            cursor: pointer;
+        .tipper-input {
+            width: 50px;
+        }
+        .scrollable-table {
+            overflow-x: auto;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <form id="weightForm">
-        <table>
-            <title> SGX Minerals Pvt Ltd </title>
-            <tr class="header-row">
-                <th>Weight Bridge</th>
-                <td><input type="text" name="weight_bridge" value="SOUTH_WEIGH"></td>
-                <th>Entry Type</th>
-                <td><input type="text" name="entry_type" value="Outward"></td>
-            </tr>
-            <tr>
-                <th>Serial No.</th>
-                <td><input type="text" name="serial_no"></td>
-                <th>Vehicle No.</th>
-                <td><input type="text" name="vehicle_no"></td>
-            </tr>
-            <tr>
-                <th>Supplier</th>
-                <td><input type="text" name="supplier"></td>
-                <th>Customer</th>
-                <td><input type="text" name="customer"></td>
-            </tr>
-            <tr>
-                <th>Material</th>
-                <td><input type="text" name="material"></td>
-                <th>Charges</th>
-                <td><input type="text" name="charges"></td>
-            </tr>
-            <tr>
-                <th>Gross Weight</th>
-                <td><input type="text" name="gross_weight"></td>
-                <th>Date / Time (Gross)</th>
-                <td><input type="datetime-local" name="gross_datetime"></td>
-            </tr>
-            <tr>
-                <th>Tare Weight</th>
-                <td><input type="text" name="tare_weight"></td>
-                <th>Date / Time (Tare)</th>
-                <td><input type="datetime-local" name="tare_datetime"></td>
-            </tr>
-            <tr>
-                <th>Net Weight</th>
-                <td><input type="text" name="net_weight" readonly></td>
-                <th></th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>Driver</th>
-                <td><input type="text" name="driver"></td>
-                <th>Operator</th>
-                <td><input type="text" name="operator"></td>
-            </tr>
-        </table>
-        
-        <div class="buttons">
-            <button type="button" onclick="calculateNetWeight()">Calculate Net Weight</button>
-            <button type="button" onclick="printForm()">Print</button>
-            <button type="reset">Reset</button>
+    <div class="header">
+        <h1>Quarry & Transport Operations Dashboard</h1>
+    </div>
+    
+    <div class="container">
+        <!-- Box 1: Excavator Operations -->
+        <div class="box">
+            <div class="box-title">Excavator Operations</div>
+            
+            <div class="excavator-section">
+                <h3>Volvo EC210D (Old) - SL No. 253178</h3>
+                <div class="form-group">
+                    <label for="exc1DayHours">Day Shift Working Hours:</label>
+                    <input type="number" id="exc1DayHours" min="0" max="12" value="8">
+                </div>
+                <div class="form-group">
+                    <label for="exc1NightHours">Night Shift Working Hours:</label>
+                    <input type="number" id="exc1NightHours" min="0" max="12" value="8">
+                </div>
+            </div>
+            
+            <div class="excavator-section">
+                <h3>Volvo EC210DL (New) - SL No. 312126</h3>
+                <div class="form-group">
+                    <label for="exc2DayHours">Day Shift Working Hours:</label>
+                    <input type="number" id="exc2DayHours" min="0" max="12" value="8">
+                </div>
+                <div class="form-group">
+                    <label for="exc2NightHours">Night Shift Working Hours:</label>
+                    <input type="number" id="exc2NightHours" min="0" max="12" value="8">
+                </div>
+            </div>
+            
+            <button class="btn" onclick="calculateExcavators()">Calculate Excavator Hours</button>
+            <div id="excavatorResults" class="results">
+                <h3>Excavator Summary</h3>
+                <table>
+                    <tr>
+                        <th>Excavator</th>
+                        <th>Day Hours</th>
+                        <th>Night Hours</th>
+                        <th>Total Hours</th>
+                    </tr>
+                    <tr>
+                        <td>Volvo EC210D (Old)</td>
+                        <td id="resultExc1Day">0</td>
+                        <td id="resultExc1Night">0</td>
+                        <td id="resultExc1Total">0</td>
+                    </tr>
+                    <tr>
+                        <td>Volvo EC210DL (New)</td>
+                        <td id="resultExc2Day">0</td>
+                        <td id="resultExc2Night">0</td>
+                        <td id="resultExc2Total">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Combined Total</td>
+                        <td id="resultTotalDayHours">0</td>
+                        <td id="resultTotalNightHours">0</td>
+                        <td id="resultTotalHours">0</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </form>
-
+        
+        <!-- Box 2: Transport Operations -->
+        <div class="box">
+            <div class="box-title">Transport Operations</div>
+            
+            <h3>Tipper-wise Details</h3>
+            <div class="form-group">
+                <label>Number of Tippers:</label>
+                <input type="number" id="numTippers" min="1" max="20" value="5" onchange="updateTipperTable()">
+            </div>
+            
+            <div class="scrollable-table">
+                <div id="tipperTableContainer">
+                    <!-- Tipper table will be generated here -->
+                </div>
+            </div>
+            
+            <h3>Daily Summary</h3>
+            <div class="form-group">
+                <label for="ftd">FTD (First Trip Details):</label>
+                <input type="text" id="ftd" placeholder="Enter first trip details">
+            </div>
+            <div class="form-group">
+                <label for="totalDayTrips">Total Day Shift Trips:</label>
+                <input type="number" id="totalDayTrips" min="0" value="0" readonly>
+            </div>
+            <div class="form-group">
+                <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
+                <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly>
+            </div>
+            <div class="form-group">
+                <label for="totalNightTrips">Total Night Shift Trips:</label>
+                <input type="number" id="totalNightTrips" min="0" value="0" readonly>
+            </div>
+            <div class="form-group">
+                <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
+                <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly>
+            </div>
+            
+            <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
+            <div id="transportResults" class="results">
+                <h3>Transport Summary</h3>
+                <table>
+                    <tr>
+                        <th>Shift</th>
+                        <th>Total Trips</th>
+                        <th>Total Tonnage</th>
+                        <th>Average Tonnage per Trip</th>
+                    </tr>
+                    <tr>
+                        <td>Day</td>
+                        <td id="resultDayTrips">0</td>
+                        <td id="resultDayTonnage">0</td>
+                        <td id="resultDayAvgTonnage">0</td>
+                    </tr>
+                    <tr>
+                        <td>Night</td>
+                        <td id="resultNightTrips">0</td>
+                        <td id="resultNightTonnage">0</td>
+                        <td id="resultNightAvgTonnage">0</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Combined Total</td>
+                        <td id="resultTotalTrips">0</td>
+                        <td id="resultTotalTonnage">0</td>
+                        <td id="resultTotalAvgTonnage">0</td>
+                    </tr>
+                </table>
+                <div id="ftdResult" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+    
     <script>
-        function calculateNetWeight() {
-            const gross = parseFloat(document.getElementsByName('gross_weight')[0].value) || 0;
-            const tare = parseFloat(document.getElementsByName('tare_weight')[0].value) || 0;
-            const net = gross - tare;
-            document.getElementsByName('net_weight')[0].value = net.toFixed(2);
+        // Tipper registration numbers
+        const tipperNumbers = [
+            "AP39UQ0097",
+            "AP39UQ0095",
+            "AP39UQ0097",
+            "AP39UQ4051",
+            "AP39UQ4052"
+        ];
+        
+        // Generate tipper table based on number of tippers
+        function updateTipperTable() {
+            const numTippers = document.getElementById('numTippers').value;
+            let tableHTML = `
+                <table>
+                    <tr>
+                        <th rowspan="2">Tipper No.</th>
+                        <th colspan="8" class="shift-header">Day Shift Trips (Tonnage)</th>
+                        <th colspan="8" class="shift-header">Night Shift Trips (Tonnage)</th>
+                        <th rowspan="2">Day Total</th>
+                        <th rowspan="2">Night Total</th>
+                    </tr>
+                    <tr>`;
+            
+            // Add trip headers for day shift
+            for (let i = 1; i <= 8; i++) {
+                tableHTML += `<th>T${i}</th>`;
+            }
+            
+            // Add trip headers for night shift
+            for (let i = 1; i <= 8; i++) {
+                tableHTML += `<th>T${i}</th>`;
+            }
+            
+            tableHTML += `</tr>`;
+            
+            for (let i = 0; i < numTippers; i++) {
+                const tipperNo = i < tipperNumbers.length ? tipperNumbers[i] : `Tipper ${i+1}`;
+                tableHTML += `
+                    <tr>
+                        <td>${tipperNo}</td>`;
+                
+                // Day shift trip inputs
+                for (let j = 1; j <= 8; j++) {
+                    tableHTML += `<td><input type="number" id="tipper${i+1}DayTrip${j}" min="0" step="0.1" value="0" class="tipper-input"></td>`;
+                }
+                
+                // Night shift trip inputs
+                for (let j = 1; j <= 8; j++) {
+                    tableHTML += `<td><input type="number" id="tipper${i+1}NightTrip${j}" min="0" step="0.1" value="0" class="tipper-input"></td>`;
+                }
+                
+                // Total columns (will be calculated)
+                tableHTML += `<td id="tipper${i+1}DayTotal">0</td>`;
+                tableHTML += `<td id="tipper${i+1}NightTotal">0</td>`;
+                
+                tableHTML += `</tr>`;
+            }
+            
+            tableHTML += `</table>`;
+            document.getElementById('tipperTableContainer').innerHTML = tableHTML;
         }
-
-        function printForm() {
-            window.print();
+        
+        // Initialize tipper table on page load
+        window.onload = updateTipperTable;
+        
+        function calculateExcavators() {
+            // Excavator 1
+            const exc1Day = document.getElementById('exc1DayHours').value;
+            const exc1Night = document.getElementById('exc1NightHours').value;
+            const exc1Total = parseFloat(exc1Day) + parseFloat(exc1Night);
+            
+            // Excavator 2
+            const exc2Day = document.getElementById('exc2DayHours').value;
+            const exc2Night = document.getElementById('exc2NightHours').value;
+            const exc2Total = parseFloat(exc2Day) + parseFloat(exc2Night);
+            
+            // Totals
+            const totalDay = parseFloat(exc1Day) + parseFloat(exc2Day);
+            const totalNight = parseFloat(exc1Night) + parseFloat(exc2Night);
+            const totalHours = exc1Total + exc2Total;
+            
+            // Display results
+            document.getElementById('resultExc1Day').textContent = exc1Day;
+            document.getElementById('resultExc1Night').textContent = exc1Night;
+            document.getElementById('resultExc1Total').textContent = exc1Total.toFixed(1);
+            
+            document.getElementById('resultExc2Day').textContent = exc2Day;
+            document.getElementById('resultExc2Night').textContent = exc2Night;
+            document.getElementById('resultExc2Total').textContent = exc2Total.toFixed(1);
+            
+            document.getElementById('resultTotalDayHours').textContent = totalDay.toFixed(1);
+            document.getElementById('resultTotalNightHours').textContent = totalNight.toFixed(1);
+            document.getElementById('resultTotalHours').textContent = totalHours.toFixed(1);
+            
+            // Show results section
+            document.getElementById('excavatorResults').style.display = 'block';
         }
-
-        // Auto-calculate net weight when gross or tare changes
-        document.getElementsByName('gross_weight')[0].addEventListener('change', calculateNetWeight);
-        document.getElementsByName('tare_weight')[0].addEventListener('change', calculateNetWeight);
+        
+        function calculateTransport() {
+            const numTippers = document.getElementById('numTippers').value;
+            let totalDayTrips = 0;
+            let totalDayTonnage = 0;
+            let totalNightTrips = 0;
+            let totalNightTonnage = 0;
+            
+            // Calculate totals for each tipper and overall
+            for (let i = 1; i <= numTippers; i++) {
+                let tipperDayTotal = 0;
+                let tipperDayTrips = 0;
+                let tipperNightTotal = 0;
+                let tipperNightTrips = 0;
+                
+                // Calculate day shift totals for this tipper
+                for (let j = 1; j <= 8; j++) {
+                    const tripValue = parseFloat(document.getElementById(`tipper${i}DayTrip${j}`).value) || 0;
+                    if (tripValue > 0) {
+                        tipperDayTrips++;
+                        tipperDayTotal += tripValue;
+                    }
+                }
+                
+                // Calculate night shift totals for this tipper
+                for (let j = 1; j <= 8; j++) {
+                    const tripValue = parseFloat(document.getElementById(`tipper${i}NightTrip${j}`).value) || 0;
+                    if (tripValue > 0) {
+                        tipperNightTrips++;
+                        tipperNightTotal += tripValue;
+                    }
+                }
+                
+                // Update tipper totals
+                document.getElementById(`tipper${i}DayTotal`).textContent = tipperDayTotal.toFixed(1);
+                document.getElementById(`tipper${i}NightTotal`).textContent = tipperNightTotal.toFixed(1);
+                
+                // Add to overall totals
+                totalDayTrips += tipperDayTrips;
+                totalDayTonnage += tipperDayTotal;
+                totalNightTrips += tipperNightTrips;
+                totalNightTonnage += tipperNightTotal;
+            }
+            
+            // Update daily summary
+            document.getElementById('totalDayTrips').value = totalDayTrips;
+            document.getElementById('totalDayTonnage').value = totalDayTonnage.toFixed(1);
+            document.getElementById('totalNightTrips').value = totalNightTrips;
+            document.getElementById('totalNightTonnage').value = totalNightTonnage.toFixed(1);
+            
+            // Calculate averages
+            const dayAvg = totalDayTrips > 0 ? totalDayTonnage / totalDayTrips : 0;
+            const nightAvg = totalNightTrips > 0 ? totalNightTonnage / totalNightTrips : 0;
+            const totalTrips = totalDayTrips + totalNightTrips;
+            const totalTonnage = totalDayTonnage + totalNightTonnage;
+            const totalAvg = totalTrips > 0 ? totalTonnage / totalTrips : 0;
+            
+            // Display results
+            document.getElementById('resultDayTrips').textContent = totalDayTrips;
+            document.getElementById('resultDayTonnage').textContent = totalDayTonnage.toFixed(1);
+            document.getElementById('resultDayAvgTonnage').textContent = dayAvg.toFixed(1);
+            
+            document.getElementById('resultNightTrips').textContent = totalNightTrips;
+            document.getElementById('resultNightTonnage').textContent = totalNightTonnage.toFixed(1);
+            document.getElementById('resultNightAvgTonnage').textContent = nightAvg.toFixed(1);
+            
+            document.getElementById('resultTotalTrips').textContent = totalTrips;
+            document.getElementById('resultTotalTonnage').textContent = totalTonnage.toFixed(1);
+            document.getElementById('resultTotalAvgTonnage').textContent = totalAvg.toFixed(1);
+            
+            // Show FTD if entered
+            const ftd = document.getElementById('ftd').value;
+            if (ftd) {
+                document.getElementById('ftdResult').innerHTML = `<strong>FTD:</strong> ${ftd}`;
+            }
+            
+            // Show results section
+            document.getElementById('transportResults').style.display = 'block';
+        }
     </script>
 </body>
 </html>
