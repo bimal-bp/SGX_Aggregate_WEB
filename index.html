@@ -30,6 +30,12 @@
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             padding: 15px;
+        }
+        .excavator-box {
+            flex: 0 0 calc(50% - 20px);
+            max-width: calc(50% - 20px);
+        }
+        .transport-box {
             flex: 1;
             min-width: 300px;
         }
@@ -123,7 +129,7 @@
             margin-bottom: 15px;
         }
         .small-input {
-            width: 50px;
+            width: 60px;
             padding: 4px;
             font-size: 12px;
         }
@@ -140,6 +146,39 @@
             font-weight: bold;
             background-color: #f2f2f2;
         }
+        .trip-row {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .trip-label {
+            min-width: 80px;
+            font-weight: bold;
+            padding: 4px;
+        }
+        .trip-input-group {
+            display: flex;
+            gap: 5px;
+        }
+        .tipper-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .tipper-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .tipper-totals {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +188,7 @@
    
     <div class="container">
         <!-- Box 1: Excavator Operations -->
-        <div class="box">
+        <div class="box excavator-box">
             <div class="box-title">Excavator Operations</div>
            
             <div class="excavator-section">
@@ -209,7 +248,7 @@
         </div>
        
         <!-- Box 2: Transport Operations -->
-        <div class="box">
+        <div class="box transport-box">
             <div class="box-title">Transport Operations</div>
            
             <h3>Tipper-wise Details</h3>
@@ -220,7 +259,7 @@
            
             <div class="scrollable-table">
                 <div id="tipperTableContainer">
-                    <!-- Tipper table will be generated here -->
+                    <!-- Tipper cards will be generated here -->
                 </div>
             </div>
            
@@ -293,53 +332,50 @@
         // Generate tipper table based on number of tippers
         function updateTipperTable() {
             const numTippers = document.getElementById('numTippers').value;
-            let tableHTML = `
-                <table>
-                    <tr class="trip-header">
-                        <th rowspan="2">Tipper No.</th>
-                        <th colspan="8">Day Shift Trips</th>
-                        <th colspan="8">Night Shift Trips</th>
-                        <th rowspan="2">Day Total</th>
-                        <th rowspan="2">Night Total</th>
-                    </tr>
-                    <tr class="trip-header">`;
-           
-            // Add trip headers for day shift
-            for (let i = 1; i <= 8; i++) {
-                tableHTML += `<th>T${i}</th>`;
-            }
-           
-            // Add trip headers for night shift
-            for (let i = 1; i <= 8; i++) {
-                tableHTML += `<th>T${i}</th>`;
-            }
-           
-            tableHTML += `</tr>`;
+            let tableHTML = '';
            
             for (let i = 0; i < numTippers; i++) {
                 const tipperNo = i < tipperNumbers.length ? tipperNumbers[i] : `Tipper ${i+1}`;
+                
                 tableHTML += `
-                    <tr class="tipper-row">
-                        <td>${tipperNo}</td>`;
-               
+                <div class="tipper-card">
+                    <div class="tipper-header">
+                        <span>${tipperNo}</span>
+                    </div>
+                    
+                    <div class="trip-row">
+                        <div class="trip-label">Day Shift:</div>
+                        <div class="trip-input-group">`;
+                
                 // Day shift trip inputs
                 for (let j = 1; j <= 8; j++) {
-                    tableHTML += `<td><input type="number" id="tipper${i+1}DayTrip${j}" min="0" step="0.1" value="0" class="tipper-input"></td>`;
+                    tableHTML += `<input type="number" id="tipper${i+1}DayTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
                 }
-               
+                
+                tableHTML += `
+                        </div>
+                    </div>
+                    
+                    <div class="trip-row">
+                        <div class="trip-label">Night Shift:</div>
+                        <div class="trip-input-group">`;
+                
                 // Night shift trip inputs
                 for (let j = 1; j <= 8; j++) {
-                    tableHTML += `<td><input type="number" id="tipper${i+1}NightTrip${j}" min="0" step="0.1" value="0" class="tipper-input"></td>`;
+                    tableHTML += `<input type="number" id="tipper${i+1}NightTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
                 }
-               
-                // Total columns (will be calculated)
-                tableHTML += `<td id="tipper${i+1}DayTotal">0</td>`;
-                tableHTML += `<td id="tipper${i+1}NightTotal">0</td>`;
-               
-                tableHTML += `</tr>`;
+                
+                tableHTML += `
+                        </div>
+                    </div>
+                    
+                    <div class="tipper-totals">
+                        <span>Day Total: <span id="tipper${i+1}DayTotal">0</span></span>
+                        <span>Night Total: <span id="tipper${i+1}NightTotal">0</span></span>
+                    </div>
+                </div>`;
             }
            
-            tableHTML += `</table>`;
             document.getElementById('tipperTableContainer').innerHTML = tableHTML;
         }
        
