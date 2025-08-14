@@ -45,8 +45,12 @@
             max-width: calc(70% - 20px);
         }
         .transport-box {
-            flex: 1;
-            min-width: 100%;
+            flex: 0 0 calc(70% - 20px);
+            max-width: calc(70% - 20px);
+        }
+        .compressor-box {
+            flex: 0 0 calc(30% - 20px);
+            max-width: calc(30% - 20px);
         }
         .box-title {
             font-size: 1.3em;
@@ -65,7 +69,7 @@
             font-weight: 600;
             color: #34495e;
         }
-        input[type="number"], input[type="text"] {
+        input[type="number"], input[type="text"], input[type="time"] {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
@@ -213,6 +217,16 @@
             display: flex;
             gap: 20px;
             margin-bottom: 20px;
+            width: 100%;
+        }
+        .time-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .time-label {
+            font-size: 12px;
+            color: #666;
         }
     </style>
 </head>
@@ -223,7 +237,7 @@
 
     <div class="container">
         <!-- First Row -->
-        <div class="row" style="width: 100%;">
+        <div class="row">
             <!-- Box 1: Quarry Summary -->
             <div class="box quarry-box">
                 <div class="box-title">Quarry Summary</div>
@@ -286,6 +300,12 @@
                             <input type="number" id="exc1NightHours" min="0" max="12" value="8" class="hour-input">
                             <div class="hour-label">Night Hours</div>
                         </div>
+                        <div class="time-input-group">
+                            <div>
+                                <input type="time" id="exc1StartTime" value="06:00" class="hour-input">
+                                <div class="time-label">Start Time</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -300,6 +320,12 @@
                             <input type="number" id="exc2NightHours" min="0" max="12" value="8" class="hour-input">
                             <div class="hour-label">Night Hours</div>
                         </div>
+                        <div class="time-input-group">
+                            <div>
+                                <input type="time" id="exc2StartTime" value="06:00" class="hour-input">
+                                <div class="time-label">Start Time</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -312,90 +338,143 @@
                             <th>Day Hours</th>
                             <th>Night Hours</th>
                             <th>Total Hours</th>
+                            <th>Start Time</th>
                         </tr>
                         <tr>
                             <td>253178</td>
                             <td id="resultExc1Day">0</td>
                             <td id="resultExc1Night">0</td>
                             <td id="resultExc1Total">0</td>
+                            <td id="resultExc1StartTime">06:00</td>
                         </tr>
                         <tr>
                             <td>312126</td>
                             <td id="resultExc2Day">0</td>
                             <td id="resultExc2Night">0</td>
                             <td id="resultExc2Total">0</td>
+                            <td id="resultExc2StartTime">06:00</td>
                         </tr>
                         <tr class="total-row">
                             <td>Combined Total</td>
                             <td id="resultTotalDayHours">0</td>
                             <td id="resultTotalNightHours">0</td>
                             <td id="resultTotalHours">0</td>
+                            <td>-</td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Box 3: Transport Operations -->
-        <div class="box transport-box">
-            <div class="box-title">Transport Operations</div>
-            <h3>Tipper-wise Details</h3>
-            <div class="scrollable-table">
-                <div id="tipperTableContainer">
-                    <!-- Tipper cards will be generated here -->
+        <!-- Second Row -->
+        <div class="row">
+            <!-- Box 3: Compressor Details -->
+            <div class="box compressor-box">
+                <div class="box-title">Compressor Details</div>
+                <div class="form-group">
+                    <label for="compressorName1">Compressor 1 Name:</label>
+                    <input type="text" id="compressorName1" placeholder="Enter compressor name">
+                </div>
+                <div class="form-group">
+                    <label for="compressorHours1">Compressor 1 Hours:</label>
+                    <input type="number" id="compressorHours1" min="0" value="0" step="0.1" class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="compressorName2">Compressor 2 Name:</label>
+                    <input type="text" id="compressorName2" placeholder="Enter compressor name">
+                </div>
+                <div class="form-group">
+                    <label for="compressorHours2">Compressor 2 Hours:</label>
+                    <input type="number" id="compressorHours2" min="0" value="0" step="0.1" class="small-input">
+                </div>
+                <button class="btn" onclick="calculateCompressors()">Calculate Compressors</button>
+                <div id="compressorResults" class="results">
+                    <h3>Compressor Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Compressor</th>
+                            <th>Name</th>
+                            <th>Hours</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td id="resultCompressorName1">-</td>
+                            <td id="resultCompressorHours1">0</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td id="resultCompressorName2">-</td>
+                            <td id="resultCompressorHours2">0</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="2">Total Hours</td>
+                            <td id="resultTotalCompressorHours">0</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <h3>Daily Summary</h3>
-            <div class="form-group">
-                <label for="ftd">FTD (First Trip Details):</label>
-                <input type="text" id="ftd" placeholder="Enter first trip details">
-            </div>
-            <div class="form-group">
-                <label for="totalDayTrips">Total Day Shift Trips:</label>
-                <input type="number" id="totalDayTrips" min="0" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
-                <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalNightTrips">Total Night Shift Trips:</label>
-                <input type="number" id="totalNightTrips" min="0" value="0" readonly class="small-input">
-            </div>
-            <div class="form-group">
-                <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
-                <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-            </div>
-            <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
-            <div id="transportResults" class="results">
-                <h3>Transport Summary</h3>
-                <table>
-                    <tr>
-                        <th>Shift</th>
-                        <th>Total Trips</th>
-                        <th>Total Tonnage</th>
-                        <th>Avg Tonnage/Trip</th>
-                    </tr>
-                    <tr>
-                        <td>Day</td>
-                        <td id="resultDayTrips">0</td>
-                        <td id="resultDayTonnage">0</td>
-                        <td id="resultDayAvgTonnage">0</td>
-                    </tr>
-                    <tr>
-                        <td>Night</td>
-                        <td id="resultNightTrips">0</td>
-                        <td id="resultNightTonnage">0</td>
-                        <td id="resultNightAvgTonnage">0</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td>Combined Total</td>
-                        <td id="resultTotalTrips">0</td>
-                        <td id="resultTotalTonnage">0</td>
-                        <td id="resultTotalAvgTonnage">0</td>
-                    </tr>
-                </table>
-                <div id="ftdResult" style="margin-top: 10px; font-size: 12px;"></div>
+
+            <!-- Box 4: Transport Operations -->
+            <div class="box transport-box">
+                <div class="box-title">Transport Operations</div>
+                <h3>Tipper-wise Details</h3>
+                <div class="scrollable-table">
+                    <div id="tipperTableContainer">
+                        <!-- Tipper cards will be generated here -->
+                    </div>
+                </div>
+                <h3>Daily Summary</h3>
+                <div class="form-group">
+                    <label for="ftd">FTD (First Trip Details):</label>
+                    <input type="text" id="ftd" placeholder="Enter first trip details">
+                </div>
+                <div class="form-group">
+                    <label for="totalDayTrips">Total Day Shift Trips:</label>
+                    <input type="number" id="totalDayTrips" min="0" value="0" readonly class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
+                    <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="totalNightTrips">Total Night Shift Trips:</label>
+                    <input type="number" id="totalNightTrips" min="0" value="0" readonly class="small-input">
+                </div>
+                <div class="form-group">
+                    <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
+                    <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly class="small-input">
+                </div>
+                <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
+                <div id="transportResults" class="results">
+                    <h3>Transport Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Shift</th>
+                            <th>Total Trips</th>
+                            <th>Total Tonnage</th>
+                            <th>Avg Tonnage/Trip</th>
+                        </tr>
+                        <tr>
+                            <td>Day</td>
+                            <td id="resultDayTrips">0</td>
+                            <td id="resultDayTonnage">0</td>
+                            <td id="resultDayAvgTonnage">0</td>
+                        </tr>
+                        <tr>
+                            <td>Night</td>
+                            <td id="resultNightTrips">0</td>
+                            <td id="resultNightTonnage">0</td>
+                            <td id="resultNightAvgTonnage">0</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Combined Total</td>
+                            <td id="resultTotalTrips">0</td>
+                            <td id="resultTotalTonnage">0</td>
+                            <td id="resultTotalAvgTonnage">0</td>
+                        </tr>
+                    </table>
+                    <div id="ftdResult" style="margin-top: 10px; font-size: 12px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -476,14 +555,32 @@
             document.getElementById('otherResults').style.display = 'block';
         }
 
+        function calculateCompressors() {
+            const compressorName1 = document.getElementById('compressorName1').value || "-";
+            const compressorHours1 = parseFloat(document.getElementById('compressorHours1').value) || 0;
+            const compressorName2 = document.getElementById('compressorName2').value || "-";
+            const compressorHours2 = parseFloat(document.getElementById('compressorHours2').value) || 0;
+            const totalHours = compressorHours1 + compressorHours2;
+
+            document.getElementById('resultCompressorName1').textContent = compressorName1;
+            document.getElementById('resultCompressorHours1').textContent = compressorHours1.toFixed(1);
+            document.getElementById('resultCompressorName2').textContent = compressorName2;
+            document.getElementById('resultCompressorHours2').textContent = compressorHours2.toFixed(1);
+            document.getElementById('resultTotalCompressorHours').textContent = totalHours.toFixed(1);
+
+            document.getElementById('compressorResults').style.display = 'block';
+        }
+
         function calculateExcavators() {
             const exc1Day = parseFloat(document.getElementById('exc1DayHours').value) || 0;
             const exc1Night = parseFloat(document.getElementById('exc1NightHours').value) || 0;
             const exc1Total = exc1Day + exc1Night;
+            const exc1StartTime = document.getElementById('exc1StartTime').value;
 
             const exc2Day = parseFloat(document.getElementById('exc2DayHours').value) || 0;
             const exc2Night = parseFloat(document.getElementById('exc2NightHours').value) || 0;
             const exc2Total = exc2Day + exc2Night;
+            const exc2StartTime = document.getElementById('exc2StartTime').value;
 
             const totalDay = exc1Day + exc2Day;
             const totalNight = exc1Night + exc2Night;
@@ -492,10 +589,12 @@
             document.getElementById('resultExc1Day').textContent = exc1Day.toFixed(1);
             document.getElementById('resultExc1Night').textContent = exc1Night.toFixed(1);
             document.getElementById('resultExc1Total').textContent = exc1Total.toFixed(1);
+            document.getElementById('resultExc1StartTime').textContent = exc1StartTime;
 
             document.getElementById('resultExc2Day').textContent = exc2Day.toFixed(1);
             document.getElementById('resultExc2Night').textContent = exc2Night.toFixed(1);
             document.getElementById('resultExc2Total').textContent = exc2Total.toFixed(1);
+            document.getElementById('resultExc2StartTime').textContent = exc2StartTime;
 
             document.getElementById('resultTotalDayHours').textContent = totalDay.toFixed(1);
             document.getElementById('resultTotalNightHours').textContent = totalNight.toFixed(1);
