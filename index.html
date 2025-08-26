@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGX Minerals</title>
+    <title>SGX Minerals - Aggregate Division</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,13 +14,16 @@
         }
         
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
             color: #333;
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -58,120 +61,41 @@
             color: #ddd;
         }
         
-        /* Hero Section */
-        .hero {
-            background: #2c3e50;
-            height: 200px;
+        /* Main Content */
+        .main-content {
+            flex: 1;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            color: white;
-            text-align: center;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            padding: 0 20px;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-        }
-        
-        /* Products Section */
-        .products {
-            padding: 60px 0;
-            background: white;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            color: #2c3e50;
-            font-size: 2.2rem;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: #ff9900;
-        }
-        
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .product-img {
-            height: 200px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #666;
-            font-weight: 600;
-        }
-        
-        .product-info {
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .product-info h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: #2c3e50;
+            padding: 40px 0;
         }
         
         /* Services Section */
         .services {
-            padding: 60px 0;
-            background: #f5f7fa;
+            padding: 30px 0;
         }
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
         }
         
         .service-card {
             background: white;
-            padding: 30px;
-            border-radius: 8px;
+            padding: 25px 20px;
+            border-radius: 10px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
         }
         
         .service-card::before {
@@ -192,159 +116,68 @@
         }
         
         .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
         
         .service-icon {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: #ff9900;
             margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
         }
         
         .service-card h3 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 15px;
             color: #2c3e50;
         }
         
-        /* Plant Section */
-        .plant {
-            padding: 60px 0;
-            background: white;
-        }
-        
-        .plant-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-        
-        .plant-info h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        
-        .plant-info p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .plant-image {
-            background-color: #e0e0e0;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-size: 1.2rem;
+        .service-card p {
+            font-size: 0.95rem;
             color: #666;
+            line-height: 1.5;
         }
         
         /* Footer */
         footer {
             background: #2c3e50;
             color: white;
-            padding: 30px 0;
+            padding: 20px 0;
             text-align: center;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .footer-content p {
-            margin: 5px 0;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-        
-        .modal-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .modal-btn {
-            padding: 10px 8px;
-            background: #2c3e50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-btn:hover {
-            background: #ff9900;
-            transform: translateY(-2px);
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-        
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease forwards;
-            opacity: 0;
+            margin-top: auto;
         }
         
         /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
+        @media (max-width: 1200px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
             }
-            
-            .modal-buttons {
+        }
+        
+        @media (max-width: 900px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .services-grid {
                 grid-template-columns: 1fr;
             }
             
-            .plant-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
+            .service-card {
+                min-height: 200px;
                 padding: 20px 15px;
-                max-width: 90%;
+            }
+            
+            .logo {
+                font-size: 2rem;
             }
         }
     </style>
@@ -360,51 +193,81 @@
         </div>
     </header>
 
-
-    <!-- Services Section -->
-    <section class="services">
-        <div class="container">
-            <div class="services-grid">
-                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Quarry_Web/', '_blank')">
-                    <div class="service-icon">
-                        <i class="fas fa-mountain"></i>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Services Section -->
+        <section class="services">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Quarry_Web/', '_blank')">
+                        <div class="service-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h3>Quarry Operations</h3>
+                        <p>State-of-the-art quarrying with sustainable practices</p>
                     </div>
-                    <h3>Quarry Operations</h3>
-                    <p>State-of-the-art quarrying with sustainable practices</p>
-                </div>
-                
-                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Equipement_Mis_report/', '_blank')">
-                    <div class="service-icon">
-                        <i class="fas fa-tools"></i>
+                    
+                    <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Equipement_Mis_report/', '_blank')">
+                        <div class="service-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3>Equipment</h3>
+                        <p>Modern machinery for efficient mineral processing</p>
                     </div>
-                    <h3>Equipment</h3>
-                    <p>Modern machinery for efficient mineral processing</p>
-                </div>
-                
-                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Dispatch_WeighBridge_Transport_Billing_system/', '_blank')">
-                    <div class="service-icon">
-                        <i class="fas fa-truck-loading"></i>
+                    
+                    <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Dispatch_WeighBridge_Transport_Billing_system/', '_blank')">
+                        <div class="service-icon">
+                            <i class="fas fa-truck-loading"></i>
+                        </div>
+                        <h3>Sales & Distribution</h3>
+                        <p>Nationwide supply chain for timely delivery</p>
                     </div>
-                    <h3>Sales & Distribution</h3>
-                    <p>Nationwide supply chain for timely delivery</p>
-                </div>
-                
-                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Periodic_maintenance/', '_blank')">
-                    <div class="service-icon">
-                        <i class="fas fa-cogs"></i>
+                    
+                    <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Periodic_maintenance/', '_blank')">
+                        <div class="service-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>Maintenance</h3>
+                        <p>Regular equipment maintenance for optimal performance</p>
                     </div>
-                    <h3>Maintenance</h3>
-                    <p>Regular equipment maintenance for optimal performance</p>
-                </div>
-                
-                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Boulder_Weight_bridge/', '_blank')">
-                    <div class="service-icon">
-                        <i class="fas fa-weight-hanging"></i>
+                    
+                    <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Boulder_Weight_bridge/', '_blank')">
+                        <div class="service-icon">
+                            <i class="fas fa-weight-hanging"></i>
+                        </div>
+                        <h3>Boulder Weight Bridge</h3>
+                        <p>Accurate weighing solutions for boulder management</p>
                     </div>
-                    <h3>Boulder Weight Bridge</h3>
-                    <p>Accurate weighing solutions for boulder management</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 SGX Minerals. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Add animation to elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to service cards
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.98) translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
