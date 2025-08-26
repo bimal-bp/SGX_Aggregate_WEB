@@ -3,673 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quarry & Transport Operations Dashboard</title>
+    <title>SGX Minerals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f2f5;
-            font-size: 14px;
-        }
-        .header {
-            background: linear-gradient(90deg, #2c3e50, #34495e);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .box {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-            padding: 20px;
-            transition: transform 0.2s;
-        }
-        .box:hover {
-            transform: translateY(-5px);
-        }
-        .quarry-box {
-            flex: 0 0 calc(30% - 20px);
-            max-width: calc(30% - 20px);
-        }
-        .excavator-box {
-            flex: 0 0 calc(70% - 20px);
-            max-width: calc(70% - 20px);
-        }
-        .transport-box {
-            flex: 0 0 calc(70% - 20px);
-            max-width: calc(70% - 20px);
-        }
-        .compressor-box {
-            flex: 0 0 calc(30% - 20px);
-            max-width: calc(30% - 20px);
-        }
-        .box-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #34495e;
-        }
-        input[type="number"], input[type="text"], input[type="time"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 0;
             box-sizing: border-box;
-            font-size: 13px;
-            transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        input:focus {
-            border-color: #3498db;
-            outline: none;
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
         }
-        .btn {
-            background: linear-gradient(90deg, #3498db, #2980b9);
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
             color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.95em;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff9900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .logo span {
+            color: white;
+        }
+        
+        .tagline {
+            text-align: center;
+            font-size: 1.1rem;
             margin-top: 10px;
-            transition: background 0.3s;
+            color: #ddd;
         }
-        .btn:hover {
-            background: linear-gradient(90deg, #2980b9, #2c3e50);
-        }
-        .results {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            display: none;
-            font-size: 13px;
-            border-left: 4px solid #3498db;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 13px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        
+        /* Hero Section */
+        .hero {
+            background: #2c3e50;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
             text-align: center;
         }
-        th {
-            background-color: #f2f2f2;
-            font-size: 12px;
-            color: #2c3e50;
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
         }
-        .total-row {
-            font-weight: bold;
-            background-color: #f0f0f0;
-        }
-        .excavator-section {
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-        }
-        .excavator-section h3 {
-            margin-top: 0;
-            font-size: 1.1em;
-            color: #2c3e50;
-        }
-        .tipper-input {
-            width: 45px;
-            padding: 5px;
-            font-size: 12px;
-            text-align: center;
-        }
-        .scrollable-table {
-            overflow-x: auto;
+        
+        .hero h1 {
+            font-size: 2.5rem;
             margin-bottom: 20px;
         }
-        .small-input {
-            width: 80px;
-            padding: 6px;
-            font-size: 12px;
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
         }
-        .tipper-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #f9f9f9;
+        
+        /* Products Section */
+        .products {
+            padding: 60px 0;
+            background: white;
         }
-        .tipper-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .tipper-totals {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-weight: bold;
-            padding-top: 8px;
-            border-top: 1px solid #ddd;
-        }
-        .trip-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .trip-label {
-            min-width: 100px;
-            font-weight: bold;
-            padding: 5px;
-        }
-        .trip-input-group {
-            display: flex;
-            gap: 8px;
-        }
-        .excavator-display {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-        .excavator-id {
-            width: 80px;
-            padding: 8px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
+        
+        .section-title {
             text-align: center;
-            font-weight: bold;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
         }
-        .excavator-hours {
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #ff9900;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-img {
+            height: 200px;
+            background-color: #ddd;
             display: flex;
-            gap: 10px;
-        }
-        .hour-input {
-            width: 60px;
-            padding: 6px;
-            text-align: center;
-        }
-        .hour-label {
-            font-size: 12px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             color: #666;
-            margin-top: 3px;
+            font-weight: 600;
         }
-        .row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
+        
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .product-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 60px 0;
+            background: #f5f7fa;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 5px;
+            background: #ff9900;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
-        .time-input-group {
-            display: flex;
-            gap: 10px;
+        
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            color: #ff9900;
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        /* Plant Section */
+        .plant {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .plant-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
             align-items: center;
         }
-        .time-label {
-            font-size: 12px;
+        
+        .plant-info h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .plant-info p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .plant-image {
+            background-color: #e0e0e0;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.2rem;
             color: #666;
+        }
+        
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-content p {
+            margin: 5px 0;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .modal-btn {
+            padding: 10px 8px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn:hover {
+            background: #ff9900;
+            transform: translateY(-2px);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .modal-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .plant-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 20px 15px;
+                max-width: 90%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Quarry & Transport Operations Dashboard</h1>
-    </div>
-
-    <div class="container">
-        <!-- First Row -->
-        <div class="row">
-            <!-- Box 1: Quarry Summary -->
-            <div class="box quarry-box">
-                <div class="box-title">Quarry Summary</div>
-                <div class="form-group">
-                    <label for="numNMR">Number of NMR:</label>
-                    <input type="number" id="numNMR" min="0" value="0" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="numCompressor">Number of Compressors:</label>
-                    <input type="number" id="numCompressor" min="0" value="0" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="numFeets">Number of Feets:</label>
-                    <input type="number" id="numFeets" min="0" value="0" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="numHoles">Number of Holes:</label>
-                    <input type="number" id="numHoles" min="0" value="0" class="small-input">
-                </div>
-                <button class="btn" onclick="calculateOther()">Calculate Quarry Summary</button>
-                <div id="otherResults" class="results">
-                    <h3>Quarry Summary</h3>
-                    <table>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Value</th>
-                        </tr>
-                        <tr>
-                            <td>Number of NMR</td>
-                            <td id="resultNMR">0</td>
-                        </tr>
-                        <tr>
-                            <td>Number of Compressors</td>
-                            <td id="resultCompressor">0</td>
-                        </tr>
-                        <tr>
-                            <td>Number of Feets</td>
-                            <td id="resultFeets">0</td>
-                        </tr>
-                        <tr>
-                            <td>Number of Holes</td>
-                            <td id="resultHoles">0</td>
-                        </tr>
-                    </table>
-                </div>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">SGX <span>MINERALS</span></div>
             </div>
+            <p class="tagline">Aggregate Division Ankapalle</p>
+        </div>
+    </header>
 
-            <!-- Box 2: Excavator Operations -->
-            <div class="box excavator-box">
-                <div class="box-title">Excavator Operations</div>
-                
-                <div class="excavator-display">
-                    <div class="excavator-id">253178</div>
-                    <div class="excavator-hours">
-                        <div>
-                            <input type="number" id="exc1DayHours" min="0" max="12" value="8" class="hour-input">
-                            <div class="hour-label">Day Hours</div>
-                        </div>
-                        <div>
-                            <input type="number" id="exc1NightHours" min="0" max="12" value="8" class="hour-input">
-                            <div class="hour-label">Night Hours</div>
-                        </div>
-                        <div class="time-input-group">
-                            <div>
-                                <input type="time" id="exc1StartTime" value="06:00" class="hour-input">
-                                <div class="time-label">Start Time</div>
-                            </div>
-                        </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Quality Minerals & Aggregates</h1>
+            <p>Providing high-quality construction materials since 2005</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Quarry_Web/', '_blank')">
+                    <div class="service-icon">
+                        <i class="fas fa-mountain"></i>
                     </div>
+                    <h3>Quarry Operations</h3>
+                    <p>State-of-the-art quarrying with sustainable practices</p>
                 </div>
                 
-                <div class="excavator-display">
-                    <div class="excavator-id">312126</div>
-                    <div class="excavator-hours">
-                        <div>
-                            <input type="number" id="exc2DayHours" min="0" max="12" value="8" class="hour-input">
-                            <div class="hour-label">Day Hours</div>
-                        </div>
-                        <div>
-                            <input type="number" id="exc2NightHours" min="0" max="12" value="8" class="hour-input">
-                            <div class="hour-label">Night Hours</div>
-                        </div>
-                        <div class="time-input-group">
-                            <div>
-                                <input type="time" id="exc2StartTime" value="06:00" class="hour-input">
-                                <div class="time-label">Start Time</div>
-                            </div>
-                        </div>
+                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Equipement_Mis_report/', '_blank')">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
                     </div>
+                    <h3>Equipment</h3>
+                    <p>Modern machinery for efficient mineral processing</p>
                 </div>
                 
-                <button class="btn" onclick="calculateExcavators()">Calculate Excavator Hours</button>
-                <div id="excavatorResults" class="results">
-                    <h3>Excavator Summary</h3>
-                    <table>
-                        <tr>
-                            <th>Excavator</th>
-                            <th>Day Hours</th>
-                            <th>Night Hours</th>
-                            <th>Total Hours</th>
-                            <th>Start Time</th>
-                        </tr>
-                        <tr>
-                            <td>253178</td>
-                            <td id="resultExc1Day">0</td>
-                            <td id="resultExc1Night">0</td>
-                            <td id="resultExc1Total">0</td>
-                            <td id="resultExc1StartTime">06:00</td>
-                        </tr>
-                        <tr>
-                            <td>312126</td>
-                            <td id="resultExc2Day">0</td>
-                            <td id="resultExc2Night">0</td>
-                            <td id="resultExc2Total">0</td>
-                            <td id="resultExc2StartTime">06:00</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Combined Total</td>
-                            <td id="resultTotalDayHours">0</td>
-                            <td id="resultTotalNightHours">0</td>
-                            <td id="resultTotalHours">0</td>
-                            <td>-</td>
-                        </tr>
-                    </table>
+                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Dispatch_WeighBridge_Transport_Billing_system/', '_blank')">
+                    <div class="service-icon">
+                        <i class="fas fa-truck-loading"></i>
+                    </div>
+                    <h3>Sales & Distribution</h3>
+                    <p>Nationwide supply chain for timely delivery</p>
+                </div>
+                
+                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Periodic_maintenance/', '_blank')">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Maintenance</h3>
+                    <p>Regular equipment maintenance for optimal performance</p>
+                </div>
+                
+                <div class="service-card" onclick="window.open('https://bimal-bp.github.io/Boulder_Weight_bridge/', '_blank')">
+                    <div class="service-icon">
+                        <i class="fas fa-weight-hanging"></i>
+                    </div>
+                    <h3>Boulder Weight Bridge</h3>
+                    <p>Accurate weighing solutions for boulder management</p>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Second Row -->
-        <div class="row">
-            <!-- Box 3: Compressor Details -->
-            <div class="box compressor-box">
-                <div class="box-title">Compressor Details</div>
-                <div class="form-group">
-                    <label for="compressorName1">Compressor 1 Name:</label>
-                    <input type="text" id="compressorName1" placeholder="Enter compressor name">
+    <!-- Plant Section -->
+    <section class="plant">
+        <div class="container">
+            <div class="plant-content">
+                <div class="plant-info">
+                    <h2>Our State-of-the-Art Processing Plant</h2>
+                    <p>SGX Minerals operates one of the most advanced mineral processing facilities in the region. Our plant incorporates cutting-edge technology to ensure the highest quality products while maintaining environmental sustainability.</p>
+                    <p>With a production capacity of over 500 tons per hour, we can meet the demands of large-scale construction projects while maintaining consistent quality across all our products.</p>
+                    <p>Our dedicated team of engineers and technicians work around the clock to ensure optimal operation and minimal downtime.</p>
                 </div>
-                <div class="form-group">
-                    <label for="compressorHours1">Compressor 1 Hours:</label>
-                    <input type="number" id="compressorHours1" min="0" value="0" step="0.1" class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="compressorName2">Compressor 2 Name:</label>
-                    <input type="text" id="compressorName2" placeholder="Enter compressor name">
-                </div>
-                <div class="form-group">
-                    <label for="compressorHours2">Compressor 2 Hours:</label>
-                    <input type="number" id="compressorHours2" min="0" value="0" step="0.1" class="small-input">
-                </div>
-                <button class="btn" onclick="calculateCompressors()">Calculate Compressors</button>
-                <div id="compressorResults" class="results">
-                    <h3>Compressor Summary</h3>
-                    <table>
-                        <tr>
-                            <th>Compressor</th>
-                            <th>Name</th>
-                            <th>Hours</th>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td id="resultCompressorName1">-</td>
-                            <td id="resultCompressorHours1">0</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td id="resultCompressorName2">-</td>
-                            <td id="resultCompressorHours2">0</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td colspan="2">Total Hours</td>
-                            <td id="resultTotalCompressorHours">0</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Box 4: Transport Operations -->
-            <div class="box transport-box">
-                <div class="box-title">Transport Operations</div>
-                <h3>Tipper-wise Details</h3>
-                <div class="scrollable-table">
-                    <div id="tipperTableContainer">
-                        <!-- Tipper cards will be generated here -->
-                    </div>
-                </div>
-                <h3>Daily Summary</h3>
-                <div class="form-group">
-                    <label for="ftd">FTD (First Trip Details):</label>
-                    <input type="text" id="ftd" placeholder="Enter first trip details">
-                </div>
-                <div class="form-group">
-                    <label for="totalDayTrips">Total Day Shift Trips:</label>
-                    <input type="number" id="totalDayTrips" min="0" value="0" readonly class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="totalDayTonnage">Total Day Shift Tonnage:</label>
-                    <input type="number" id="totalDayTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="totalNightTrips">Total Night Shift Trips:</label>
-                    <input type="number" id="totalNightTrips" min="0" value="0" readonly class="small-input">
-                </div>
-                <div class="form-group">
-                    <label for="totalNightTonnage">Total Night Shift Tonnage:</label>
-                    <input type="number" id="totalNightTonnage" min="0" step="0.1" value="0" readonly class="small-input">
-                </div>
-                <button class="btn" onclick="calculateTransport()">Calculate Transport</button>
-                <div id="transportResults" class="results">
-                    <h3>Transport Summary</h3>
-                    <table>
-                        <tr>
-                            <th>Shift</th>
-                            <th>Total Trips</th>
-                            <th>Total Tonnage</th>
-                            <th>Avg Tonnage/Trip</th>
-                        </tr>
-                        <tr>
-                            <td>Day</td>
-                            <td id="resultDayTrips">0</td>
-                            <td id="resultDayTonnage">0</td>
-                            <td id="resultDayAvgTonnage">0</td>
-                        </tr>
-                        <tr>
-                            <td>Night</td>
-                            <td id="resultNightTrips">0</td>
-                            <td id="resultNightTonnage">0</td>
-                            <td id="resultNightAvgTonnage">0</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Combined Total</td>
-                            <td id="resultTotalTrips">0</td>
-                            <td id="resultTotalTonnage">0</td>
-                            <td id="resultTotalAvgTonnage">0</td>
-                        </tr>
-                    </table>
-                    <div id="ftdResult" style="margin-top: 10px; font-size: 12px;"></div>
+                <div class="plant-image">
+                    Processing Plant Facility
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 SGX Minerals. All rights reserved.</p>
+                <p>Ankapalle, Andhra Pradesh</p>
+                <p>Contact: info@sgxminerals.com | Phone: +91 XXXXX XXXXX</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Tipper registration numbers
-        const tipperNumbers = [
-            "AP39UQ0095",
-            "AP39UQ0097",
-            "AP39UW9880",
-            "AP39UW9881",
-            "AP39UY4651",
-            "AP39WQ0926",
-            "AP39WQ0928",
-            "AP39WQ2056",
-            "AP39WF2052",
-            "AP39WF2057",
-            "AP39WF2058",
-            "AP39WF2059"
-        ];
-
-        // Generate tipper table for 12 fixed tippers
-        function updateTipperTable() {
-            const numTippers = 12;
-            let tableHTML = '';
-
-            for (let i = 0; i < numTippers; i++) {
-                const tipperNo = i < tipperNumbers.length ? tipperNumbers[i] : `Tipper ${i+1}`;
-                tableHTML += `
-                    <div class="tipper-card">
-                        <div class="tipper-header">
-                            <span>${tipperNo}</span>
-                        </div>
-                        <div class="trip-row">
-                            <div class="trip-label">Day Shift:</div>
-                            <div class="trip-input-group">`;
-                for (let j = 1; j <= 8; j++) {
-                    tableHTML += `<input type="number" id="tipper${i+1}DayTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
-                }
-                tableHTML += `
-                        </div>
-                        </div>
-                        <div class="trip-row">
-                            <div class="trip-label">Night Shift:</div>
-                            <div class="trip-input-group">`;
-                for (let j = 1; j <= 8; j++) {
-                    tableHTML += `<input type="number" id="tipper${i+1}NightTrip${j}" min="0" step="0.1" value="0" class="tipper-input" placeholder="T${j}">`;
-                }
-                tableHTML += `
-                        </div>
-                        </div>
-                        <div class="tipper-totals">
-                            <span>Day Trips: <span id="tipper${i+1}DayTrips">0</span></span>
-                            <span>Day Total: <span id="tipper${i+1}DayTotal">0</span></span>
-                            <span>Night Trips: <span id="tipper${i+1}NightTrips">0</span></span>
-                            <span>Night Total: <span id="tipper${i+1}NightTotal">0</span></span>
-                        </div>
-                    </div>`;
-            }
-
-            document.getElementById('tipperTableContainer').innerHTML = tableHTML;
-        }
-
-        // Initialize tipper table on page load
-        window.onload = updateTipperTable;
-
-        function calculateOther() {
-            const numNMR = parseFloat(document.getElementById('numNMR').value) || 0;
-            const numCompressor = parseFloat(document.getElementById('numCompressor').value) || 0;
-            const numFeets = parseFloat(document.getElementById('numFeets').value) || 0;
-            const numHoles = parseFloat(document.getElementById('numHoles').value) || 0;
-
-            document.getElementById('resultNMR').textContent = numNMR.toFixed(0);
-            document.getElementById('resultCompressor').textContent = numCompressor.toFixed(0);
-            document.getElementById('resultFeets').textContent = numFeets.toFixed(0);
-            document.getElementById('resultHoles').textContent = numHoles.toFixed(0);
-
-            document.getElementById('otherResults').style.display = 'block';
-        }
-
-        function calculateCompressors() {
-            const compressorName1 = document.getElementById('compressorName1').value || "-";
-            const compressorHours1 = parseFloat(document.getElementById('compressorHours1').value) || 0;
-            const compressorName2 = document.getElementById('compressorName2').value || "-";
-            const compressorHours2 = parseFloat(document.getElementById('compressorHours2').value) || 0;
-            const totalHours = compressorHours1 + compressorHours2;
-
-            document.getElementById('resultCompressorName1').textContent = compressorName1;
-            document.getElementById('resultCompressorHours1').textContent = compressorHours1.toFixed(1);
-            document.getElementById('resultCompressorName2').textContent = compressorName2;
-            document.getElementById('resultCompressorHours2').textContent = compressorHours2.toFixed(1);
-            document.getElementById('resultTotalCompressorHours').textContent = totalHours.toFixed(1);
-
-            document.getElementById('compressorResults').style.display = 'block';
-        }
-
-        function calculateExcavators() {
-            const exc1Day = parseFloat(document.getElementById('exc1DayHours').value) || 0;
-            const exc1Night = parseFloat(document.getElementById('exc1NightHours').value) || 0;
-            const exc1Total = exc1Day + exc1Night;
-            const exc1StartTime = document.getElementById('exc1StartTime').value;
-
-            const exc2Day = parseFloat(document.getElementById('exc2DayHours').value) || 0;
-            const exc2Night = parseFloat(document.getElementById('exc2NightHours').value) || 0;
-            const exc2Total = exc2Day + exc2Night;
-            const exc2StartTime = document.getElementById('exc2StartTime').value;
-
-            const totalDay = exc1Day + exc2Day;
-            const totalNight = exc1Night + exc2Night;
-            const totalHours = exc1Total + exc2Total;
-
-            document.getElementById('resultExc1Day').textContent = exc1Day.toFixed(1);
-            document.getElementById('resultExc1Night').textContent = exc1Night.toFixed(1);
-            document.getElementById('resultExc1Total').textContent = exc1Total.toFixed(1);
-            document.getElementById('resultExc1StartTime').textContent = exc1StartTime;
-
-            document.getElementById('resultExc2Day').textContent = exc2Day.toFixed(1);
-            document.getElementById('resultExc2Night').textContent = exc2Night.toFixed(1);
-            document.getElementById('resultExc2Total').textContent = exc2Total.toFixed(1);
-            document.getElementById('resultExc2StartTime').textContent = exc2StartTime;
-
-            document.getElementById('resultTotalDayHours').textContent = totalDay.toFixed(1);
-            document.getElementById('resultTotalNightHours').textContent = totalNight.toFixed(1);
-            document.getElementById('resultTotalHours').textContent = totalHours.toFixed(1);
-
-            document.getElementById('excavatorResults').style.display = 'block';
-        }
-
-        function calculateTransport() {
-            const numTippers = 12;
-            let totalDayTrips = 0;
-            let totalDayTonnage = 0;
-            let totalNightTrips = 0;
-            let totalNightTonnage = 0;
-
-            for (let i = 1; i <= numTippers; i++) {
-                let tipperDayTotal = 0;
-                let tipperDayTrips = 0;
-                let tipperNightTotal = 0;
-                let tipperNightTrips = 0;
-
-                for (let j = 1; j <= 8; j++) {
-                    const dayTripValue = parseFloat(document.getElementById(`tipper${i}DayTrip${j}`).value) || 0;
-                    if (dayTripValue > 0) {
-                        tipperDayTrips++;
-                        tipperDayTotal += dayTripValue;
-                    }
-                    const nightTripValue = parseFloat(document.getElementById(`tipper${i}NightTrip${j}`).value) || 0;
-                    if (nightTripValue > 0) {
-                        tipperNightTrips++;
-                        tipperNightTotal += nightTripValue;
-                    }
-                }
-
-                document.getElementById(`tipper${i}DayTrips`).textContent = tipperDayTrips;
-                document.getElementById(`tipper${i}DayTotal`).textContent = tipperDayTotal.toFixed(1);
-                document.getElementById(`tipper${i}NightTrips`).textContent = tipperNightTrips;
-                document.getElementById(`tipper${i}NightTotal`).textContent = tipperNightTotal.toFixed(1);
-
-                totalDayTrips += tipperDayTrips;
-                totalDayTonnage += tipperDayTotal;
-                totalNightTrips += tipperNightTrips;
-                totalNightTonnage += tipperNightTotal;
-            }
-
-            document.getElementById('totalDayTrips').value = totalDayTrips;
-            document.getElementById('totalDayTonnage').value = totalDayTonnage.toFixed(1);
-            document.getElementById('totalNightTrips').value = totalNightTrips;
-            document.getElementById('totalNightTonnage').value = totalNightTonnage.toFixed(1);
-
-            const dayAvg = totalDayTrips > 0 ? totalDayTonnage / totalDayTrips : 0;
-            const nightAvg = totalNightTrips > 0 ? totalNightTonnage / totalNightTrips : 0;
-            const totalTrips = totalDayTrips + totalNightTrips;
-            const totalTonnage = totalDayTonnage + totalNightTonnage;
-            const totalAvg = totalTrips > 0 ? totalTonnage / totalTrips : 0;
-
-            document.getElementById('resultDayTrips').textContent = totalDayTrips;
-            document.getElementById('resultDayTonnage').textContent = totalDayTonnage.toFixed(1);
-            document.getElementById('resultDayAvgTonnage').textContent = dayAvg.toFixed(1);
-
-            document.getElementById('resultNightTrips').textContent = totalNightTrips;
-            document.getElementById('resultNightTonnage').textContent = totalNightTonnage.toFixed(1);
-            document.getElementById('resultNightAvgTonnage').textContent = nightAvg.toFixed(1);
-
-            document.getElementById('resultTotalTrips').textContent = totalTrips;
-            document.getElementById('resultTotalTonnage').textContent = totalTonnage.toFixed(1);
-            document.getElementById('resultTotalAvgTonnage').textContent = totalAvg.toFixed(1);
-
-            const ftd = document.getElementById('ftd').value;
-            if (ftd) {
-                document.getElementById('ftdResult').innerHTML = `<strong>FTD:</strong> ${ftd}`;
-            }
-
-            document.getElementById('transportResults').style.display = 'block';
-        }
+        // Add subtle animation to service cards on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in');
+            });
+        });
     </script>
 </body>
 </html>
