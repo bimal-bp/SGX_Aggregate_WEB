@@ -161,19 +161,26 @@
             line-height: 1.4;
         }
         
-        /* Future Developments Section */
+        /* Future Developments Section - UPDATED */
         .future-developments {
             background: white;
-            padding: 30px;
+            padding: 20px 30px;
             border-radius: 10px;
             margin-top: 40px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .future-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
         .future-developments h2 {
             color: #2c3e50;
-            text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 0;
             font-size: 1.8rem;
             position: relative;
             padding-bottom: 10px;
@@ -183,14 +190,26 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             width: 80px;
             height: 3px;
             background: #ff9900;
         }
         
+        .toggle-icon {
+            font-size: 1.5rem;
+            color: #ff9900;
+            transition: transform 0.3s ease;
+        }
+        
+        .future-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
         .future-list {
+            padding-top: 25px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
@@ -212,6 +231,19 @@
         .future-item p {
             color: #666;
             line-height: 1.5;
+        }
+        
+        /* Expanded state */
+        .future-developments.expanded {
+            padding-bottom: 30px;
+        }
+        
+        .future-developments.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .future-developments.expanded .future-content {
+            max-height: 2000px;
         }
         
         /* Footer */
@@ -260,7 +292,11 @@
             }
             
             .future-developments {
-                padding: 20px 15px;
+                padding: 15px;
+            }
+            
+            .future-developments h2 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -343,37 +379,42 @@
                     </div>
                 </div>
                 
-                <!-- Future Developments Section -->
-                <div class="future-developments">
-                    <h2>Future Developments</h2>
-                    <div class="future-list">
-                        <div class="future-item">
-                            <h3>Plant Web</h3>
-                            <p>Stock Productio Details.</p>
-                        </div>
-                        <div class="future-item">
-                            <h3>Equipment MIS & Service Integration</h3>
-                            <p>Integrate equipment MIS report with service schedule. As we dialy track KMR & HMR, it will help to track service hours perfectly and ensure timely maintenance.</p>
-                        </div>
-                        
-                        <div class="future-item">
-                            <h3>Tyre Efficiency Tracking</h3>
-                            <p>Integrate tyre efficiency with Boulder Weight Bridge to get accurate distance traveled and calculate tyre efficiency more precisely.</p>
-                        </div>
-                        
-                        <div class="future-item">
-                            <h3>Idle Time Reduction</h3>
-                            <p>Reduce idle time by ensuring tippers are empty after dumping. Currently, 1-2 boulders sometimes remain inside, causing 40 seconds delay per trip. Fixing this could increase 34 trips per month.</p>
-                        </div>
-                        
-                        <div class="future-item">
-                            <h3>Advanced Tracking System</h3>
-                            <p>Implement camera or RFID systems to track tippers more efficiently and optimize machine utilization.</p>
-                        </div>
-                        
-                        <div class="future-item">
-                            <h3>Comprehensive Cost Sheet</h3>
-                            <p>Create a main cost sheet with full day's cost details including compressor cost, equipment maintenance cost, plant costs, and transporter costs.</p>
+                <!-- Future Developments Section - UPDATED -->
+                <div class="future-developments" id="futureDevSection">
+                    <div class="future-header">
+                        <h2>Future Developments</h2>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    <div class="future-content">
+                        <div class="future-list">
+                            <div class="future-item">
+                                <h3>Plant Web</h3>
+                                <p>Stock Production Details.</p>
+                            </div>
+                            <div class="future-item">
+                                <h3>Equipment MIS & Service Integration</h3>
+                                <p>Integrate equipment MIS report with service schedule. As we daily track KMR & HMR, it will help to track service hours perfectly and ensure timely maintenance.</p>
+                            </div>
+                            
+                            <div class="future-item">
+                                <h3>Tyre Efficiency Tracking</h3>
+                                <p>Integrate tyre efficiency with Boulder Weight Bridge to get accurate distance traveled and calculate tyre efficiency more precisely.</p>
+                            </div>
+                            
+                            <div class="future-item">
+                                <h3>Idle Time Reduction</h3>
+                                <p>Reduce idle time by ensuring tippers are empty after dumping. Currently, 1-2 boulders sometimes remain inside, causing 40 seconds delay per trip. Fixing this could increase 34 trips per month.</p>
+                            </div>
+                            
+                            <div class="future-item">
+                                <h3>Advanced Tracking System</h3>
+                                <p>Implement camera or RFID systems to track tippers more efficiently and optimize machine utilization.</p>
+                            </div>
+                            
+                            <div class="future-item">
+                                <h3>Comprehensive Cost Sheet</h3>
+                                <p>Create a main cost sheet with full day's cost details including compressor cost, equipment maintenance cost, plant costs, and transporter costs.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -404,6 +445,12 @@
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = '';
                 });
+            });
+            
+            // Toggle Future Developments section
+            const futureSection = document.getElementById('futureDevSection');
+            futureSection.addEventListener('click', function() {
+                this.classList.toggle('expanded');
             });
         });
     </script>
