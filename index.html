@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 1280px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -77,13 +77,13 @@
         
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
         }
         
         .service-card {
             background: white;
-            padding: 25px 20px;
+            padding: 20px 15px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -121,9 +121,9 @@
         }
         
         .service-icon {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: #ff9900;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             transition: transform 0.3s ease;
         }
         
@@ -132,13 +132,13 @@
         }
         
         .service-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             color: #2c3e50;
         }
         
         .service-card p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #666;
             line-height: 1.5;
             text-align: left;
@@ -153,41 +153,12 @@
         }
         
         .bullet-points li {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             margin-bottom: 8px;
             list-style-type: disc;
-            margin-left: 20px;
+            margin-left: 18px;
             line-height: 1.4;
-        }
-        
-        /* Proof Images Section */
-        .proof-images {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        
-        .proof-image {
-            width: 100px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .proof-image:hover {
-            transform: scale(1.8);
-            z-index: 10;
-        }
-        
-        .proof-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         
         /* Future Developments Section */
@@ -275,6 +246,101 @@
             max-height: 2000px;
         }
         
+        /* Gallery Section */
+        .gallery-section {
+            margin-top: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .gallery-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: #ff9900;
+        }
+        
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .gallery-item {
+            width: 180px;
+            height: 140px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Modal for full-size images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 80%;
+            margin-top: 5%;
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+        }
+        
         /* Footer */
         footer {
             background: #2c3e50;
@@ -284,16 +350,14 @@
             margin-top: auto;
         }
         
-        /* New style for proof images in future developments */
-        .future-proof-images {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
+        /* Responsive */
+        @media (max-width: 1600px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
         }
         
-        /* Responsive */
         @media (max-width: 1200px) {
             .services-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -335,6 +399,15 @@
             
             .future-developments h2 {
                 font-size: 1.5rem;
+            }
+            
+            .gallery-section {
+                padding: 20px 15px;
+            }
+            
+            .gallery-item {
+                width: 150px;
+                height: 120px;
             }
         }
     </style>
@@ -416,7 +489,7 @@
                         </ul>
                     </div>
                     
-                    <!-- New Card for Monthly Quarry PPT -->
+                    <!-- Monthly Quarry PPT Card without images -->
                     <div class="service-card" onclick="window.open('https://bimal-bp.github.io/SGX_Quarry_PPT/', '_blank')">
                         <div class="service-icon">
                             <i class="fas fa-chart-line"></i>
@@ -427,19 +500,6 @@
                             <li>Performance analytics</li>
                             <li>Operational insights</li>
                         </ul>
-                        
-                        <!-- Proof Images -->
-                        <div class="proof-images">
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true" alt="Boulder Weight Bridge">
-                            </div>
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true" alt="Excavator">
-                            </div>
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true" alt="Screenshot">
-                            </div>
-                        </div>
                     </div>
                 </div>
                 
@@ -450,19 +510,6 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="future-content">
-                        <!-- Proof Images in one row -->
-                        <div class="future-proof-images">
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true" alt="Boulder Weight Bridge">
-                            </div>
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true" alt="Excavator">
-                            </div>
-                            <div class="proof-image">
-                                <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true" alt="Screenshot">
-                            </div>
-                        </div>
-                        
                         <div class="future-list">
                             <div class="future-item">
                                 <h3>Plant Web</h3>
@@ -495,8 +542,31 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Gallery Section -->
+                <div class="gallery-section">
+                    <h2>Project Gallery</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true')">
+                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true" alt="Boulder Weight Bridge">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true')">
+                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true" alt="Excavator">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true')">
+                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true" alt="Screenshot">
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
+    </div>
+
+    <!-- Modal for full-size images -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption" class="caption"></div>
     </div>
 
     <!-- Footer -->
@@ -529,6 +599,26 @@
                 this.classList.toggle('expanded');
             });
         });
+        
+        // Modal functionality for gallery images
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+        
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
 </html>
