@@ -233,50 +233,23 @@
             line-height: 1.5;
         }
         
-        /* Expanded state */
-        .future-developments.expanded {
-            padding-bottom: 30px;
+        /* Gallery inside Future Developments */
+        .gallery-inside-future {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         
-        .future-developments.expanded .toggle-icon {
-            transform: rotate(180deg);
-        }
-        
-        .future-developments.expanded .future-content {
-            max-height: 2000px;
-        }
-        
-        /* Gallery Section */
-        .gallery-section {
-            margin-top: 40px;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .gallery-section h2 {
+        .gallery-inside-future h3 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .gallery-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 80px;
-            height: 3px;
-            background: #ff9900;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
         }
         
         .gallery-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
         }
         
@@ -298,6 +271,19 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+        
+        /* Expanded state */
+        .future-developments.expanded {
+            padding-bottom: 30px;
+        }
+        
+        .future-developments.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .future-developments.expanded .future-content {
+            max-height: 3000px;
         }
         
         /* Modal for full-size images */
@@ -373,6 +359,11 @@
             .future-list {
                 grid-template-columns: 1fr;
             }
+            
+            .gallery-item {
+                width: 150px;
+                height: 120px;
+            }
         }
         
         @media (max-width: 600px) {
@@ -401,13 +392,9 @@
                 font-size: 1.5rem;
             }
             
-            .gallery-section {
-                padding: 20px 15px;
-            }
-            
             .gallery-item {
-                width: 150px;
-                height: 120px;
+                width: 130px;
+                height: 100px;
             }
         }
     </style>
@@ -503,7 +490,7 @@
                     </div>
                 </div>
                 
-                <!-- Future Developments Section -->
+                <!-- Future Developments Section with Gallery Inside -->
                 <div class="future-developments" id="futureDevSection">
                     <div class="future-header">
                         <h2>Future Developments</h2>
@@ -540,21 +527,21 @@
                                 <p>Create a main cost sheet with full day's cost details including compressor cost, equipment maintenance cost, plant costs, and transporter costs.</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Gallery Section -->
-                <div class="gallery-section">
-                    <h2>Project Gallery</h2>
-                    <div class="gallery-grid">
-                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true')">
-                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true" alt="Boulder Weight Bridge">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true')">
-                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true" alt="Excavator">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true')">
-                            <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true" alt="Screenshot">
+                        
+                        <!-- Gallery inside Future Developments -->
+                        <div class="gallery-inside-future">
+                            <h3>Project Gallery</h3>
+                            <div class="gallery-grid">
+                                <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true')">
+                                    <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/boulder%20weight%20bridge%20stock.jpg?raw=true" alt="Boulder Weight Bridge">
+                                </div>
+                                <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true')">
+                                    <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Yellow%20Excavator%20on%20Sandy%20Terrain%20(2).png?raw=true" alt="Excavator">
+                                </div>
+                                <div class="gallery-item" onclick="openModal('https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true')">
+                                    <img src="https://github.com/bimal-bp/SGX_Aggregate_WEB/blob/main/Screenshot%202025-08-29%20225821.png?raw=true" alt="Screenshot">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -595,8 +582,11 @@
             
             // Toggle Future Developments section
             const futureSection = document.getElementById('futureDevSection');
-            futureSection.addEventListener('click', function() {
-                this.classList.toggle('expanded');
+            futureSection.addEventListener('click', function(e) {
+                // Only toggle if clicking on the header, not the gallery items
+                if (e.target.closest('.future-header') || !e.target.closest('.gallery-item')) {
+                    this.classList.toggle('expanded');
+                }
             });
         });
         
