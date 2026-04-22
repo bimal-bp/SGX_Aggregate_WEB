@@ -1,132 +1,110 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weighbridge Slip</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGX Minerals - Aggregate Division</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            width: 800px;
-            border: 2px solid #000;
-            padding: 10px;
-        }
-        h2 {
-            text-align: center;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .address {
+        
+        body {
+            background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff9900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .logo span {
+            color: white;
+        }
+        
+        .tagline {
             text-align: center;
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: #ddd;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 0;
         }
-        td, th {
-            border: 1px solid black;
-            padding: 6px;
+        
+        /* Services Section */
+        .services {
+            padding: 30px 0;
         }
-        .no-border td {
-            border: none;
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
         }
-        input {
-            width: 100%;
-            border: none;
-            outline: none;
-            font-size: 14px;
-        }
-        .section-title {
-            background: #eee;
-            font-weight: bold;
+        
+        .service-card {
+            background: white;
+            padding: 20px 15px;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
         }
-        @media print {
-            input {
-                border: none;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h2 contenteditable="true">SGX Minerals Private Limited</h2>
-    <div class="address" contenteditable="true">
-        Makavaram Village, Anakapalli Mandal, Anakapalle, Andhra Pradesh - 531032
-    </div>
-
-    <table>
-        <tr>
-            <td>Serial No.</td>
-            <td><input value="260313027"></td>
-            <td>Entry Type</td>
-            <td><input value="Outward"></td>
-        </tr>
-
-        <tr>
-            <td>Supplier</td>
-            <td><input value="Self"></td>
-            <td>Vehicle No.</td>
-            <td><input value="AP39UV2345"></td>
-        </tr>
-
-        <tr>
-            <td>Material</td>
-            <td><input value="GSB"></td>
-            <td>Customer</td>
-            <td><input value="M/S K V RAMANA REDDY"></td>
-        </tr>
-
-        <tr>
-            <td>Gross Weight</td>
-            <td><input value="59920"></td>
-            <td>Date/Time (Gross)</td>
-            <td><input value="13-03-2026 14:22:12"></td>
-        </tr>
-
-        <tr>
-            <td>Tare Weight</td>
-            <td><input value="14360"></td>
-            <td>Date/Time (Tare)</td>
-            <td><input value="13-03-2026 13:37:38"></td>
-        </tr>
-
-        <tr>
-            <td>Net Weight</td>
-            <td><input value="45560"></td>
-            <td>Charges</td>
-            <td><input value=""></td>
-        </tr>
-
-        <tr>
-            <td>Driver</td>
-            <td><input value=""></td>
-            <td>Operator</td>
-            <td><input value="operator_south"></td>
-        </tr>
-    </table>
-
-    <br>
-
-    <table>
-        <tr>
-            <td class="section-title">Dispatch Details</td>
-        </tr>
-        <tr>
-            <td><input value="Delivery Address: Srinagar, Railway Gate Works, Vizag"></td>
-        </tr>
-    </table>
-
-</div>
-
-</body>
-</html>            width: 100%;
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 5px;
             background: #ff9900;
             transform: scaleX(0);
